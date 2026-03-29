@@ -12,22 +12,37 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig }
     { name: "NB", population: books.filter(b => b.gender === 'NB').length, color: "#8e41e5", legendFontColor: "#fff" },
   ]), [books]);
 
-  const activeYears = useMemo(() => (
-    [...new Set(books.map(b => b.year))].sort()
-  ), [books]);
+// --- DENTRO de StatsPanel ---
 
-  const counts = useMemo(() => (
-    activeYears.map(y => books.filter(b => b.year === y).length)
-  ), [books, activeYears]);
+const lineData = useMemo(() => {
+  // 1. Extraer anos únicos e ordenalos
+  const allYears = [...new Set(books.map(b => b.year))].sort((a, b) => parseInt(a) - parseInt(b));
 
-  const lineData = {
-    labels: activeYears.length > 0 ? activeYears : ["N/A"],
+  if (allYears.length === 0) {
+    return { labels: ["N/A"], datasets: [{ data: [0] }] };
+  }
+
+  // 2. Contar libros por cada ano
+  const dataCounts = allYears.map(y => books.filter(b => b.year === y).length);
+
+  // 3. Crear etiquetas: SÓ primeiro, medio e último
+  const labels = allYears.map((year, index) => {
+    if (index === 0) return year; // Primeiro
+    if (index === allYears.length - 1) return year; // Último
+    if (index === Math.floor(allYears.length / 2) && allYears.length > 2) return year; // Medio
+    return ""; // O resto baleiro para que non se amontonen
+  });
+
+  return {
+    labels: labels,
     datasets: [{
-      data: counts.length > 0 ? counts : [0],
+      data: dataCounts,
       color: (opacity = 1) => `rgba(142, 65, 229, ${opacity})`,
       strokeWidth: 2
     }]
   };
+}, [books]);
+
 
   return (
     <View>
