@@ -1,4 +1,4 @@
-# 📚 BookTracker
+#  bookiest
 
 <p align="center">
   <img src="https://shields.io" alt="Status">
@@ -21,10 +21,24 @@ I didn't really like the book trackers out there, so I created my own. Simple, w
 Feel free to install it ;)
 
 ## Screenshots
+## 📱 Screenshots
+
 <p align="center">
-  <img src="https://placeholder.com" width="200" />
-  <img src="https://placeholder.com" width="200" />
-  <img src="https://placeholder.com" width="200" />
+  <img src="assets/example_images/IMG_5214.PNG" width="180"/><br/>
+  <em>Library view</em>
+</p>
+
+<p align="center">
+  <img src="assets/example_images/IMG_5218.PNG" width="180"/>
+  <img src="assets/example_images/IMG_5220.PNG" width="180"/><br/>
+  <em>Tracking & stats</em>
+</p>
+
+<p align="center">
+  <img src="assets/example_images/IMG_5221.PNG" width="180"/>
+  <img src="assets/example_images/IMG_5222.PNG" width="180"/>
+  <img src="assets/example_images/IMG_5223.PNG" width="180"/><br/>
+  <em>Insights & filters</em>
 </p>
 
 ## Features
@@ -33,9 +47,11 @@ Feel free to install it ;)
 | Feature | Description |
 | :--- | :--- |
 | **Bulk upload/Dowload of data** | You can bulk upload/download your books using a JSON file, just make sure that is in the correct format (See format here)[] |
-| **Smart stats** | Organize books by status (To Read, Reading, Finished). | 
+| **Clear organization** | Organize books by status (To Read, Reading, Finished). | 
 | **Reading insights** | Visual analytics of your reading habits, gender, number and nationality of authors, as well as the year range of your library. Custom data visualization with GoogleMaps |
 | **Dark mode** | Full support for system-wide dark light-weight theme. |  
+
+
 
 ## Download & Install
 
@@ -46,6 +62,7 @@ Feel free to install it ;)
    cd ios && pod install && cd ..
    npx react-native run-ios # Or your framework command
    ```
+For iOS if you dont want to pay the full Apple developer account fee, use PM2 on your own laptop. 
 
 ### 🤖 Android (Play Store / APK)
 
