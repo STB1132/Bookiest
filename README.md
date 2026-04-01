@@ -1,12 +1,4 @@
 #  bookiest
-
-<p align="center">
-  <img src="https://shields.io" alt="Status">
-  <img src="https://shields.io" alt="License">
-  <img src="https://shields.io" alt="Platform">
-  <img src="https://shields.io" alt="PRs Welcome">
-</p>
-
 ---
 
 ### [Overview](#overview) • [📱 Screenshots](#screenshots) • [📥 Install](#download--install) • [📄 License](#license)
@@ -54,6 +46,8 @@ Feel free to install it ;)
 
 
 ## Download & Install
+
+First, add your Google Maps token in 
 
 ### 🍏 iOS (App Store / TestFlight)
 1. Ensure you have **Xcode 14+** installed and a Apple developer account .

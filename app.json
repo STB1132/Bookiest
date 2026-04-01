@@ -18,7 +18,7 @@
       "package": "com.stb1132.bookiest",
       "config": {
         "googleMaps": {
-          const API_TOKEN = process.env.API_TOKEN;
+          "apiKey": "AIzaSyDFrbMPTFey8bhQcixXYbN8LcKq6rGDq4Q"
         }
       },
       "adaptiveIcon": {
