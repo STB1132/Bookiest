@@ -13,16 +13,14 @@ I didn't really like the book trackers out there, so I created my own. Simple, w
 Feel free to install it ;)
 
 ## Screenshots
-## 📱 Screenshots
-
 <p align="center">
 
   <em>Library & Stats view</em>
 <p align="center">
   <img src="./assets/example_images/IMG_5214.PNG" width="100" />
-  <img src="./assets/example_images/IMG_5218.PNG" width="100" />
+  <!-- <img src="./assets/example_images/IMG_5218.PNG" width="100" />
   <img src="./assets/example_images/IMG_5220.PNG" width="100" />
-  <img src="./assets/example_images/IMG_5222.PNG" width="100" />
+  <img src="./assets/example_images/IMG_5222.PNG" width="100" /> -->
   <img src="./assets/example_images/IMG_5223.PNG" width="100" />
 </p>
 
