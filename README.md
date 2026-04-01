@@ -17,7 +17,7 @@ Feel free to install it ;)
 
 <p align="center">
 
-  <em>Library view</em>
+  <em>Library & Stats view</em>
 <p align="center">
   <img src="./assets/example_images/IMG_5214.PNG" width="100" />
   <img src="./assets/example_images/IMG_5218.PNG" width="100" />
