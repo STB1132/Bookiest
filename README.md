@@ -9,7 +9,7 @@
 
 ---
 
-### [🚀 Features](#-features) • [📱 Screenshots](#-screenshots) • [📥 Install](#-download--install) • [📄 License](#-license)
+### [Overview](#-Overview) • [📱 Screenshots](#-Screenshots) • [📥 Install](#-download--install) • [📄 License](#-license)
 
 ---
 
@@ -32,15 +32,15 @@ Feel free to install it ;)
 
 | Feature | Description | Technical Highlight |
 | :--- | :--- | :--- |
-| **Real-time Tracking** | Track pages and chapters as you read. | Efficient State Management |
-| **Smart Library** | Organize books by status (To Read, Reading, Finished). | Advanced Local Persistence |
-| **Reading Insights** | Visual analytics of your monthly reading habits. | Custom Data Visualization |
-| **Dark Mode** | Full support for system-wide dark/light themes. | Dynamic Theming Engine |
+| **Bulk upload/Dowload of data** | You can bulk upload/download your books using a JSON file, just make sure that is in the correct format (See format here)[] |
+| **Smart stats** | Organize books by status (To Read, Reading, Finished). | 
+| **Reading insights** | Visual analytics of your reading habits, gender, number and nationality of authors, as well as the year range of your library. Custom data visualization with GoogleMaps |
+| **Dark mode** | Full support for system-wide dark light-weight theme. |  
 
 ## Download & Install
 
 ### 🍏 iOS (App Store / TestFlight)
-1. Ensure you have **Xcode 14+** installed.
+1. Ensure you have **Xcode 14+** installed and a Apple developer account .
 2. Clone the repo and run:
    ```bash
    cd ios && pod install && cd ..
@@ -53,3 +53,13 @@ Feel free to install it ;)
 2. Run the following command:
    ```bash
     npx react-native run-android # Or your framework command
+   ```
+
+## License
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.
+
+- **Attribution**: You must give appropriate credit and provide a link to the original source.
+- **Non-Commercial**: You may not use the material for commercial purposes.
+
+See the [LICENSE](LICENSE) file for full details.
