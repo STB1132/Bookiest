@@ -19,12 +19,12 @@ Feel free to install it ;)
 
   <em>Library view</em>
 <p align="center">
-  <img src="./assets/example_images/IMG_5214.PNG" width="300" />
-  <img src="./assets/example_images/IMG_5218.PNG" width="300" />
-  <img src="./assets/example_images/IMG_5220.PNG" width="300" />
-  <img src="./assets/example_images/IMG_5221.PNG" width="300" />
-  <img src="./assets/example_images/IMG_5222.PNG" width="300" />
-  <img src="./assets/example_images/IMG_5223.PNG" width="300" />
+  <img src="./assets/example_images/IMG_5214.PNG" width="100" />
+  <img src="./assets/example_images/IMG_5218.PNG" width="100" />
+  <img src="./assets/example_images/IMG_5220.PNG" width="100" />
+  <img src="./assets/example_images/IMG_5221.PNG" width="100" />
+  <img src="./assets/example_images/IMG_5222.PNG" width="100" />
+  <img src="./assets/example_images/IMG_5223.PNG" width="100" />
 </p>
 
 ## Features
