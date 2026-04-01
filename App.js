@@ -51,6 +51,13 @@ export default function App() {
           value={input}
           onChangeText={setInput}
         />
+        <Text>Add a Book</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Book title"
+          value={input}
+          onChangeText={setInput}
+        />
         <Button title="Save" onPress={addBook} />
         <Button title="Back" onPress={() => setScreen('home')} />
       </View>

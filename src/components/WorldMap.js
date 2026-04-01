@@ -3,7 +3,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 
 import React from 'react';
-// Importamos o dicionario que acabamos de crear
+
 import { COUNTRY_COORDS } from '../constants/countries';
 
 export default function WorldMap({ countryCounts }) {
@@ -51,19 +51,17 @@ export default function WorldMap({ countryCounts }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 160,      // Mesma altura que os gráficos para que quede simétrico
-    width: 300,       // Ancho fixo en píxeles, NON en %
+    height: 160,      
+    width: 281,       
     borderRadius: 19,
     overflow: 'hidden',
-    backgroundColor: '#17263c', // Fondo escuro mentres carga
+    backgroundColor: '#17263c', 
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
 });
 
-
-// Estilo visual escuro (JSON de Google Maps)
 const mapDarkStyle = [
   { "elementType": "geometry", "stylers": [{ "color": "#242f3e" }] },
   { "elementType": "labels.text.fill", "stylers": [{ "color": "#746855" }] },

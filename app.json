@@ -8,13 +8,17 @@
     "scheme": "bookiest",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.stb1132.bookiest",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.stb1132.bookiest",
       "config": {
-      "googleMaps": {
-        "apiKey": "AIzaSyDFrbMPTFey8bhQcixXYbN8LcKq6rGDq4Q" 
+        "googleMaps": {
+          "apiKey": "AIzaSyDFrbMPTFey8bhQcixXYbN8LcKq6rGDq4Q"
         }
       },
       "adaptiveIcon": {
@@ -23,8 +27,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.stb1132.bookiest"
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
@@ -42,7 +45,8 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

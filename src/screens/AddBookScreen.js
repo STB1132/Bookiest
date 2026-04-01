@@ -1,8 +1,9 @@
 import { Picker } from '@react-native-picker/picker';
 import { Button, ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { COUNTRY_DATA } from '../constants/countries';
+import { COUNTRY_DATA } from '../constants/countries'; // Revisa que a ruta sexa exacta
 
-import React, { useState } from 'react';
+
+import { useState } from 'react';
 
 
 
@@ -16,17 +17,12 @@ export default function AddBookScreen({
   yearsList,
   addBook,
   setScreen,
-  styles
+  styles,
 }) {
 
 
-
-// No teu compoñente AddBookScreen:
 const [searchText, setSearchText] = useState('');
 const [showSuggestions, setShowSuggestions] = useState(false);
-
-
-// Filtramos os países segundo o que escriba o usuario
 const filteredCountries = COUNTRY_DATA.filter(item => 
   item.label.toLowerCase().includes(searchText.toLowerCase()) ||
   item.value.toLowerCase().includes(searchText.toLowerCase())

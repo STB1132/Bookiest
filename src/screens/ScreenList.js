@@ -1,4 +1,8 @@
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system/legacy';
+import * as Sharing from 'expo-sharing';
+import { useState } from 'react';
 import { Alert, Button, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import StatsPanel from '../components/StatsPanel';
 
@@ -10,142 +14,213 @@ export default function ScreenList({
   chartConfig,
   saveBooks,
   countryCounts,
-  filterToRead,      // Estado do filtro
-  setFilterToRead    // Función para cambiar o filtro
+  filterToRead,
+  setFilterToRead
 }) {
 
-  // 1. Lóxica de filtrado: filtramos os libros antes de renderizar
+  // 1. Lóxica de filtrado
   const filteredBooks = filterToRead 
     ? books.filter(book => book.toRead === true) 
     : books;
 
+  // 2. Estados para Selección
+  const [selectedIndices, setSelectedIndices] = useState([]);
+  const isSelectionMode = selectedIndices.length > 0;
+
+  const toggleSelect = (index) => {
+    setSelectedIndices((prev) => {
+      if (prev.includes(index)) {
+        return prev.filter((i) => i !== index);
+      } else {
+        return [...prev, index];
+      }
+    });
+  };
+
+  const deleteSelected = () => {
+    Alert.alert(
+      "Delete Selection",
+      `Are you sure you want to delete ${selectedIndices.length} books?`,
+      [
+        { text: "Cancel", style: "cancel" },
+        { 
+          text: "Delete", 
+          style: "destructive", 
+          onPress: () => {
+            // Filter original list removing those that match with index on the filter list
+            const booksToRemove = selectedIndices.map(i => filteredBooks[i]);
+            const updatedBooks = books.filter(b => !booksToRemove.includes(b));
+            
+            saveBooks(updatedBooks);
+            setSelectedIndices([]);
+          } 
+        }
+      ]
+    );
+  };
+
+
+  const bulkUploadBooks = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({ type: 'application/json' });
+      if (!result.canceled) {
+        const fileUri = result.assets[0].uri; 
+        const fileContent = await FileSystem.readAsStringAsync(fileUri);
+        const jsonBooks = JSON.parse(fileContent);
+        if (Array.isArray(jsonBooks)) {
+          const updatedBooks = [...books, ...jsonBooks];
+          saveBooks(updatedBooks);
+          Alert.alert('Success', jsonBooks.length + ' books added!');
+        }
+      }
+    } catch (err) {
+      Alert.alert('Error', err.message);
+    }
+  };
+
+  const handleExportJSON = async () => {
+    try {
+      const fileUri = FileSystem.documentDirectory + "my_books_backup.json";
+      await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(books, null, 2));
+      const canShare = await Sharing.isAvailableAsync();
+      if (canShare) await Sharing.shareAsync(fileUri);
+    } catch (error) {
+      Alert.alert("Error", "Could not export data.");
+    }
+  };
+
+  const showGlobalMenu = () => {
+    const options = [
+      { text: "Upload JSON (Import)", onPress: bulkUploadBooks },
+      { text: "Download JSON (Export)", onPress: handleExportJSON },
+    ];
+
+    if (isSelectionMode) {
+      options.push({ text: "🗑️ Delete Selected", onPress: deleteSelected, style: 'destructive' });
+      options.push({ text: "Clear Selection", onPress: () => setSelectedIndices([]) });
+    } else {
+      options.push({ 
+        text: "✅ Select Books", 
+        onPress: () => { if (filteredBooks.length > 0) setSelectedIndices([0]); } 
+      });
+    }
+
+    options.push({ text: "Cancel", style: "cancel" });
+    Alert.alert("Database Actions", "Choose an option:", options);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: '#25292e' }}>
-        <TouchableOpacity 
-        style={styles.backButtonFloating} 
-        onPress={() => setScreen('home')}
-        >
+      {/* Back button */}
+      <TouchableOpacity style={styles.backButtonFloating} onPress={() => setScreen('home')}>
         <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>←</Text>
-        </TouchableOpacity>
+      </TouchableOpacity>
         
+      {/* Home menu button */}
+      <TouchableOpacity 
+        style={{
+          position: 'absolute', top: 50, right: 20, zIndex: 10,
+          backgroundColor: isSelectionMode ? "#8e41e5" : "rgba(0,0,0,0.5)",
+          width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'
+        }} 
+        onPress={showGlobalMenu}
+      >
+        {isSelectionMode ? (
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>{selectedIndices.length}</Text>
+        ) : (
+          <Ionicons name="ellipsis-horizontal" size={22} color="#fff" />
+        )}
+      </TouchableOpacity>
+
       <FlatList
         style={styles.container}
-        data={filteredBooks} // Usamos a lista filtrada
+        data={filteredBooks}
         keyExtractor={(_, index) => index.toString()}
-
-        // CABECEIRA: Gráficos + Botón de Filtro
         ListHeaderComponent={
-        <View>
-            <StatsPanel
-            books={books}
-            styles={styles}
-            chartConfig={chartConfig}
-            countryCounts={countryCounts} 
-            />
-            
-            {/* Selector de Filtro */}
+          <View>
+            <StatsPanel books={books} styles={styles} chartConfig={chartConfig} countryCounts={countryCounts} />
             <View style={{ paddingVertical: 11, borderBottomWidth: 1, borderBottomColor: '#333', alignItems: 'center' }}>
-            
-            <TouchableOpacity 
+              <TouchableOpacity 
                 onPress={() => setFilterToRead(!filterToRead)}
-                style={{
-                backgroundColor: filterToRead ? "#8e41e5" : "#444",
-                paddingVertical: 8,
-                paddingHorizontal: 16,
-                borderRadius: 8,
-                }}
-            >
-                <Text style={{ 
-                color: '#fff', 
-                fontSize: 12,      // <--- AQUÍ CONTROLAS O TAMAÑO
-                fontWeight: 'bold',
-                textAlign: 'center'
-                }}>
-                {filterToRead ? "Showing: TO READ 📖" : "Showing: ALL BOOKS 📚"}
+                style={{ backgroundColor: filterToRead ? "#8e41e5" : "#444", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 8 }}
+              >
+                <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>
+                  {filterToRead ? "Showing: TO READ 📖" : "Showing: ALL BOOKS 📚"}
                 </Text>
-            </TouchableOpacity>
-
-            <Text style={{ color: '#888', fontSize: 10, textAlign: 'center', marginTop: 8 }}>
-                {filteredBooks.length} books found
-            </Text>
+              </TouchableOpacity>
+              <Text style={{ color: '#888', fontSize: 10, marginTop: 8 }}>{filteredBooks.length} books found</Text>
             </View>
-        </View>
+          </View>
         }
+        renderItem={({ item, index }) => {
+          const isSelected = selectedIndices.includes(index);
 
-
-       renderItem={({ item, index }) => {
-  
-        const showMenu = () => {
+          const showIndividualMenu = () => {
             Alert.alert(
-            "Options", 
-            `What do you want to do with "${item.title}"?`,
-            [
+              "Options", `What to do with "${item.title}"?`,
+              [
                 {
-                text: item.toRead ? "Mark as Finished ✅" : "Mark to Read 📖",
-                onPress: () => {
+                  text: item.toRead ? "Mark as Finished ✅" : "Mark to Read 📖",
+                  onPress: () => {
                     const updatedBooks = [...books];
-                    // Buscamos o libro real por título (máis seguro que o index se hai filtros)
                     const realIndex = books.findIndex(b => b.title === item.title);
                     if (realIndex !== -1) {
-                    updatedBooks[realIndex].toRead = !item.toRead;
-                    saveBooks(updatedBooks); // Asegúrate de pasar saveBooks como prop
+                      updatedBooks[realIndex].toRead = !item.toRead;
+                      saveBooks(updatedBooks);
                     }
-                }
+                  }
                 },
-                {
-                text: "Delete Book 🗑️",
-                style: "destructive",
-                onPress: () => deleteBook(index)
-                },
-                {
-                text: "Cancel",
-                style: "cancel"
-                }
-            ]
+                { text: "Delete Book 🗑️", style: "destructive", onPress: () => deleteBook(index) },
+                { text: "Cancel", style: "cancel" }
+              ]
             );
-        };
+          };
 
-  return (
-    <TouchableOpacity 
-      style={styles.bookItemRow} 
-      onLongPress={showMenu} // Tamén funciona deixando pulsado
-      activeOpacity={0.7}
-    >
-      <View style={{ flex: 1 }}>
-        <Text style={styles.bookTitle}>
-          {item.title}{' '}
-          {item.toRead && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>📖 TO READ</Text>
-            </View>
-          )}
-        </Text>
-        <Text style={styles.bookSub}>
-          {item.author} ({item.gender}) - {item.country} - {item.year}
-        </Text>
-      </View>
-
-      {/* Botón de tres puntos en lugar da X */}
-      <TouchableOpacity onPress={showMenu} style={{ padding: 10 }}>
-        <Text style={{ color: '#888', fontSize: 20, fontWeight: 'bold' }}>⋮</Text>
-      </TouchableOpacity>
-    </TouchableOpacity>
-  );
-}}
-
-
-
-        // PÉ DA LISTA
+          return (
+            <TouchableOpacity 
+              style={[
+                styles.bookItemRow, 
+                isSelected && { backgroundColor: 'rgba(142, 65, 229, 0.2)', borderColor: '#8e41e5', borderWidth: 1 }
+              ]} 
+              onPress={() => isSelectionMode ? toggleSelect(index) : showIndividualMenu()}
+              onLongPress={() => toggleSelect(index)}
+              activeOpacity={0.7}
+            >
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                {isSelectionMode && (
+                  <Ionicons 
+                    name={isSelected ? "checkbox" : "square-outline"} 
+                    size={22} color={isSelected ? "#8e41e5" : "#666"} style={{ marginRight: 12 }} 
+                  />
+                )}
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.bookTitle}>
+                    {item.title}{' '}
+                    {item.toRead && (
+                      <View style={styles.badge}>
+                        <Text style={styles.badgeText}>📖 TO READ</Text>
+                      </View>
+                    )}
+                  </Text>
+                  <Text style={styles.bookSub}>{item.author}  ({item.country}) {item.year}</Text>
+                </View>
+              </View>
+              {!isSelectionMode && (
+                <TouchableOpacity onPress={showIndividualMenu} style={{ padding: 10 }}>
+                  <Ionicons name="ellipsis-vertical" size={20} color="#888" />
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+          );
+        }}
         ListFooterComponent={
           <View style={{ marginTop: 30, marginBottom: 60 }}>
             <Button title="Back to Home" onPress={() => setScreen('home')} />
           </View>
         }
-
-        // Mensaxe se a lista está baleira
         ListEmptyComponent={
           <View style={{ alignItems: 'center', marginTop: 50 }}>
-            <Text style={{ color: '#bbb' }}>No books found in this category.</Text>
+            <Text style={{ color: '#bbb' }}>No books found.</Text>
           </View>
         }
       />

@@ -18,49 +18,44 @@ export const styles = StyleSheet.create({
   chartBox: { width: '48%', alignItems: 'center' },
   smallLabel: { color: '#fff', fontSize: 14, marginBottom: 5, fontWeight: 'bold' },
   bookItemRow: {
-    flexDirection: 'row',     // Pon o texto e o botón un ao lado do outro
-    alignItems: 'center',      // Centra verticalmente o botón co texto
+    flexDirection: 'row',     
+    alignItems: 'center',      
     borderBottomWidth: 1,
     borderBottomColor: '#333',
     paddingVertical: 10,
   },
   deleteButton: {
-    width: 40,                // Tamaño suficiente para ver a X
-    height: 40,               // Mesma altura para que sexa cadrado
-    // justifyContent: 'center', // Centra a X verticalmente
-    // alignItems: 'center',     // Centra a X horizontalmente
-    // marginLeft: 10,           // Sepárao do texto
-    // // backgroundColor: '#444',  // Un gris escuro para que contraste co fondo
-    // // borderRadius: 4,          // Un toque suave nas esquinas (opcional, pon 0 se o queres 100% recto)
+    width: 40,             
+    height: 40,               
   },
   deleteButtonText: {
-    color: '#ff4444',         // A X en vermello para que se vexa ben
-    fontSize: 18,             // Tamaño da letra
-    fontWeight: 'bold',       // Que se vexa grosa
+    color: '#b72b2b',         
+    fontSize: 18,        
+    fontWeight: 'bold',    
   },
 
   badge: {
     backgroundColor: '#8e41e5',
-    paddingHorizontal: 6,    // Máis espazo aos lados para que non se corte
-    paddingVertical: 2,
-    borderRadius: 4,         // Un pouco máis redondo queda mellor
-    marginLeft: 8,           // Separación do título
+    paddingHorizontal: 5,    
+    paddingVertical: 0,
+    borderRadius: 4,         
+    marginLeft: 8,           
     alignItems: 'center',
     justifyContent: 'center',
-    display: 'flex',         // Asegura que se comporte como bloque
+    display: 'flex',         
   },
   badgeText: {
     color: '#fff',
     fontSize: 10,
     fontWeight: 'bold',
-    lineHeight: 14,          // Axuda a que o texto non se corte por arriba/abaixo
+    lineHeight: 14,          
   },
   backButtonFloating: {
     position: 'absolute',
-    top: 58,                // Axusta segundo o "notch" do teu iPhone
+    top: 58,                
     left: 20,
-    zIndex: 5,             // Para que estea por riba de todo
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semi-transparente
+    zIndex: 5,            
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -70,29 +65,29 @@ export const styles = StyleSheet.create({
     // borderColor: '#444',
   },
     suggestionsContainer: {
-    backgroundColor: '#333',     // Gris escuro para contrastar co fondo negro
-    borderRadius: 12,            // Bordes redondeados
-    marginTop: 5,                // Separación do input
-    position: 'absolute',        // Flota por riba do seguinte contido
-    top: 75,                     // Xusto debaixo do TextInput
+    backgroundColor: '#333',    
+    borderRadius: 12,            
+    marginTop: 5,                
+    position: 'absolute',        
+    top: 75,                     
     left: 0,
     right: 0,
-    zIndex: 999,                 // Asegura que estea por riba de todo
-    elevation: 10,               // Sombra en Android
-    shadowColor: '#000',         // Sombra en iOS
+    zIndex: 999,                 
+    elevation: 10,               
+    shadowColor: '#000',         
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     borderWidth: 1,
-    borderColor: '#444',         // Borde fino para dar definición
-    overflow: 'hidden',          // Para que o efecto "press" non saia dos bordes
+    borderColor: '#444',        
+    overflow: 'hidden',          
   },
   suggestionItem: {
-    paddingVertical: 14,         // Máis espazo para que sexa fácil de tocar
+    paddingVertical: 14,        
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#444',
-    flexDirection: 'row',        // Por se queres poñer iconas no futuro
+    flexDirection: 'row',        
     alignItems: 'center',
   },
   suggestionText: {
@@ -101,6 +96,29 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
+  chartBox: {
+    backgroundColor: '#2c3139',
+    borderRadius: 16,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    minHeight: 200, 
+    elevation: 4,   
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  smallLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#9CA3AF',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+    marginBottom: 10, 
+    textAlign: 'center',
+    width: '100%',
+  },
 
 
 });
+
