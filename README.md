@@ -16,21 +16,15 @@ Feel free to install it ;)
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="assets/example_images/IMG_5214.PNG" width="180"/><br/>
+
   <em>Library view</em>
-</p>
-
 <p align="center">
-  <img src="assets/example_images/IMG_5218.PNG" width="180"/>
-  <img src="assets/example_images/IMG_5220.PNG" width="180"/><br/>
-  <em>Tracking & stats</em>
-</p>
-
-<p align="center">
-  <img src="assets/example_images/IMG_5221.PNG" width="180"/>
-  <img src="assets/example_images/IMG_5222.PNG" width="180"/>
-  <img src="assets/example_images/IMG_5223.PNG" width="180"/><br/>
-  <em>Insights & filters</em>
+  <img src="./assets/example_images/IMG_5214.PNG" width="200" />
+  <img src="./assets/example_images/IMG_5218.PNG" width="200" />
+  <img src="./assets/example_images/IMG_5220.PNG" width="200" />
+  <img src="./assets/example_images/IMG_5221.PNG" width="200" />
+  <img src="./assets/example_images/IMG_5222.PNG" width="200" />
+  <img src="./assets/example_images/IMG_5223.PNG" width="200" />
 </p>
 
 ## Features
