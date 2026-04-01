@@ -9,7 +9,7 @@
 
 ---
 
-### [Overview](#-Overview) • [📱 Screenshots](#-Screenshots) • [📥 Install](#-download--install) • [📄 License](#-license)
+### [Overview](#overview) • [📱 Screenshots](#screenshots) • [📥 Install](#download--install) • [📄 License](#license)
 
 ---
 
@@ -30,8 +30,8 @@ Feel free to install it ;)
 ## Features
 
 
-| Feature | Description | Technical Highlight |
-| :--- | :--- | :--- |
+| Feature | Description |
+| :--- | :--- |
 | **Bulk upload/Dowload of data** | You can bulk upload/download your books using a JSON file, just make sure that is in the correct format (See format here)[] |
 | **Smart stats** | Organize books by status (To Read, Reading, Finished). | 
 | **Reading insights** | Visual analytics of your reading habits, gender, number and nationality of authors, as well as the year range of your library. Custom data visualization with GoogleMaps |
