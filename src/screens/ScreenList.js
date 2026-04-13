@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import { useState } from 'react';
-import { Alert, Button, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import StatsPanel from '../components/StatsPanel';
 
 export default function ScreenList({
@@ -18,10 +18,34 @@ export default function ScreenList({
   setFilterToRead
 }) {
 
+ const [searchQuery, setSearchQuery] = useState('');
   // 1. Lóxica de filtrado
-  const filteredBooks = filterToRead 
-    ? books.filter(book => book.toRead === true) 
-    : books;
+ const filteredBooks = books.filter(book => {
+  // Primeiro aplicamos o filtro de "To Read" que xa tiñas
+  const matchesToRead = filterToRead ? book.toRead === true : true;
+  if (!matchesToRead) return false;
+
+  const query = searchQuery.toLowerCase();
+  
+  // Se non hai busca, amosamos todos
+  if (!query) return true;
+
+  // Lóxica de busca en múltiples campos:
+  return (
+    book.title.toLowerCase().includes(query) ||
+    book.author.toLowerCase().includes(query) ||
+    book.country.toLowerCase().includes(query) ||
+    book.year?.toString().includes(query) || // Busca por ano de publicación
+    (book.readInYear?.toString().includes(query)) // Busca por ano de lectura (o que gardamos antes)
+  );
+});
+
+
+  // --- ENGADE ESTO AQUÍ (DAQUÍ SAEN AS VARIABLES QUE FALTAN) ---
+  const currentYear = new Date().getFullYear();
+  const readThisYear = books.filter(book => !book.toRead && parseInt(book.year) === currentYear).length;
+  const leftInSprint = books.filter(book => book.toRead === true).length;
+
 
   // 2. Estados para Selección
   const [selectedIndices, setSelectedIndices] = useState([]);
@@ -77,6 +101,8 @@ export default function ScreenList({
       Alert.alert('Error', err.message);
     }
   };
+
+
 
   const handleExportJSON = async () => {
     try {
@@ -138,20 +164,47 @@ export default function ScreenList({
         keyExtractor={(_, index) => index.toString()}
         ListHeaderComponent={
           <View>
-            <StatsPanel books={books} styles={styles} chartConfig={chartConfig} countryCounts={countryCounts} />
+            <StatsPanel books={books} styles={styles} chartConfig={chartConfig} countryCounts={countryCounts }   filterToRead={filterToRead} setFilterToRead={setFilterToRead} />
+            <View style={{ paddingHorizontal: 20, marginTop: 0 }}>
+              <View style={{ 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                backgroundColor: '#1a1d21', 
+                borderRadius: 12, 
+                paddingHorizontal: 12,
+                borderWidth: 1,
+                borderColor: '#333'
+              }}>
+                <Ionicons name="search" size={18} color="#666" />
+                <TextInput
+                  style={{
+                    flex: 1,
+                    color: '#fff',
+                    paddingVertical: 12,
+                    paddingHorizontal: 10,
+                    fontSize: 14
+                  }}
+                  placeholder="Search title, author, country or year..."
+                  placeholderTextColor="#666"
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                  clearButtonMode="while-editing" // Só para iOS, engade unha 'X' para borrar
+                />
+                {searchQuery.length > 0 && (
+                  <TouchableOpacity onPress={() => setSearchQuery('')}>
+                    <Ionicons name="close-circle" size={18} color="#666" />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+
+            {/* O teu botón de filtrado actual mantense debaixo */}
             <View style={{ paddingVertical: 11, borderBottomWidth: 1, borderBottomColor: '#333', alignItems: 'center' }}>
-              <TouchableOpacity 
-                onPress={() => setFilterToRead(!filterToRead)}
-                style={{ backgroundColor: filterToRead ? "#8e41e5" : "#444", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 8 }}
-              >
-                <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>
-                  {filterToRead ? "Showing: TO READ 📖" : "Showing: ALL BOOKS 📚"}
-                </Text>
-              </TouchableOpacity>
-              <Text style={{ color: '#888', fontSize: 10, marginTop: 8 }}>{filteredBooks.length} books found</Text>
+              <Text style={{ color: '#888', fontSize: 12, marginTop: 8 }}>{filteredBooks.length} books found</Text>
             </View>
           </View>
         }
+
         renderItem={({ item, index }) => {
           const isSelected = selectedIndices.includes(index);
 
@@ -159,17 +212,29 @@ export default function ScreenList({
             Alert.alert(
               "Options", `What to do with "${item.title}"?`,
               [
+                // Dentro de renderItem -> showIndividualMenu
                 {
                   text: item.toRead ? "Mark as Finished ✅" : "Mark to Read 📖",
                   onPress: () => {
                     const updatedBooks = [...books];
+                    // Buscamos o libro pola súa referencia única (neste caso título)
                     const realIndex = books.findIndex(b => b.title === item.title);
+                    
                     if (realIndex !== -1) {
-                      updatedBooks[realIndex].toRead = !item.toRead;
+                      const finishingNow = item.toRead; // Se estaba en "To Read" e prememos, é que o rematamos
+                      
+                      updatedBooks[realIndex] = {
+                        ...updatedBooks[realIndex],
+                        toRead: !item.toRead,
+                        // Engadimos ou actualizamos o ano de lectura se o estamos rematando
+                        readInYear: finishingNow ? new Date().getFullYear() : updatedBooks[realIndex].readInYear
+                      };
+
                       saveBooks(updatedBooks);
                     }
                   }
                 },
+
                 { text: "Delete Book 🗑️", style: "destructive", onPress: () => deleteBook(index) },
                 { text: "Cancel", style: "cancel" }
               ]

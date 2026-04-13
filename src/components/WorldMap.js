@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 
-import React from 'react';
 
 import { COUNTRY_COORDS } from '../constants/countries';
 

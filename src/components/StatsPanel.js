@@ -1,14 +1,30 @@
 import { useMemo } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
-import WorldMap from '../components/WorldMap';
+import WorldMap from './WorldMap';
 
-export default function StatsPanel({ books, styles, countryCounts, chartConfig }) {
+export default function StatsPanel({ books, styles, countryCounts, chartConfig,   filterToRead, setFilterToRead  }) {
   const pieData = useMemo(() => ([
     { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#d6639d", legendFontColor: "#fff" },
     { name: "M", population: books.filter(b => b.gender === 'M').length, color: "#7e1395", legendFontColor: "#fff" },
     { name: "NB", population: books.filter(b => b.gender === 'NB').length, color: "#8e41e5", legendFontColor: "#fff" },
   ]), [books]);
+
+  const currentYear = new Date().getFullYear();
+
+  // Agora filtramos polo campo persistente que creamos
+  const readThisYear = books.filter(book => 
+    !book.toRead && book.readInYear === currentYear
+  ).length;
+
+  const leftInSprint = books.filter(book => book.toRead === true).length;
+
+
+
+  const totalSprint = readThisYear + leftInSprint;
+  const progress = totalSprint > 0 ? readThisYear / totalSprint : 0;
+
+
 
   const timelineStats = useMemo(() => {
     const years = books.map(b => parseInt(b.year)).filter(y => !isNaN(y));
@@ -22,7 +38,10 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig }
       mostPopular: mostReadYear,
       count: counts[mostReadYear]
     };
+
   }, [books]);
+
+
 
   return (
     <View>
@@ -34,7 +53,7 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig }
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 10 }}
+        contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 0 }}
         style={{ marginTop: 15 }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'stretch' }}>
@@ -76,6 +95,55 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig }
             </View>
           </View>
 
+          <View style={[styles.chartBox, { width: 220, marginLeft: 15, padding: 15, justifyContent: 'center' }]}>
+            <Text style={[styles.smallLabel, { marginBottom: 15 }]}>Sprint Progress</Text>
+            
+            <View style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                <Text style={{ color: '#fff', fontSize: 28, fontWeight: 'bold' }}>{readThisYear}</Text>
+                <Text style={{ color: '#6B7280', fontSize: 21 }}> / {totalSprint}</Text>
+              </View>
+              <Text style={{ color: '#aaa', fontSize: 9, marginBottom: 15 }}>BOOKS FINISHED THIS YEAR</Text>
+            </View>
+
+            {/* Barra de progreso */}
+            <View style={{ height: 8, backgroundColor: '#374151', borderRadius: 4, overflow: 'hidden', width: '100%' }}>
+              <View style={{ 
+                height: '100%', 
+                backgroundColor: '#8e41e5', 
+                width: `${progress * 100}%`,
+                borderRadius: 4 
+              }} />
+            </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
+            <TouchableOpacity 
+              onPress={() => setFilterToRead(!filterToRead)}
+              style={{ 
+                backgroundColor: filterToRead ? "#8e41e5" : "#444", // Cor do fondo cambia aquí
+                paddingVertical: 4, 
+                paddingHorizontal: 8, 
+                borderRadius: 6 
+              }}
+            >
+              <Text style={{ 
+                color: filterToRead ? "#fff" : "#f1c40f", // Texto branco se está activo, amarelo se non
+                fontSize: 11, 
+                fontWeight: 'bold' 
+              }}>
+                {leftInSprint} LEFT
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={{ color: '#9CA3AF', fontSize: 10 }}>
+              {Math.round(progress * 100)}%
+            </Text>
+          </View>
+
+
+          </View>
+
+
           <View style={[styles.chartBox, { width: 300, marginLeft: 15 }]}>
             <Text style={styles.smallLabel}>Books by Location</Text>
             <WorldMap countryCounts={countryCounts} />
@@ -87,3 +155,5 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig }
     </View>
   );
 }
+
+

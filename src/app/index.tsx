@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Button, Dimensions, Text, View } from 'react-native';
 import AddBookScreen from '../screens/AddBookScreen';
+import Clippings from '../screens/Clippings';
 import ScreenList from '../screens/ScreenList';
 import { styles } from '../styles/styles';
 
@@ -63,12 +64,25 @@ export default function Index() {
   const yearsList = [];
   for (let i = 0; i <= 2030; i++) { yearsList.push(i.toString()); }
 
-
   const countryCounts = books.reduce((acc, book) => {
     const c = book.country || 'Unknown';
     acc[c] = (acc[c] || 0) + 1;
     return acc;
   }, {});
+
+  const [highlights, setHighlights] = useState([]);
+
+  // Cando cargues a app (useEffect), recupera tamén os highlights
+  // Cando queiras gardar:
+  const saveHighlights = async (newHighlights) => {
+    setHighlights(newHighlights);
+    try {
+      await AsyncStorage.setItem('my_highlights', JSON.stringify(newHighlights));
+    } catch (e) {
+      Alert.alert("Error", "Non se puideron gardar os recortes");
+    }
+  };
+
 
 
   // --- Screens ---
@@ -95,6 +109,17 @@ export default function Index() {
   );
 }
 
+// ENGADE ESTO AQUÍ:
+if (screen === 'clippings') {
+  return (
+    <Clippings 
+      setScreen={setScreen} 
+      styles={styles} 
+      highlights={highlights}       // Recortes actuais
+      saveHighlights={saveHighlights} // Función para gardar
+    />
+  );
+}
   if (screen === 'list') {
     return (
       <ScreenList
@@ -120,6 +145,10 @@ export default function Index() {
       <View style={{ height: 20 }} />
       
       <Button title="See My Books" onPress={() => setScreen('list')} />
+
+      <View style={{ height: 20 }} />
+      
+      <Button title="ReadWise" onPress={() => setScreen('clippings')} />
     </View>
   );
 }
