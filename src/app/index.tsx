@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Button, Dimensions, Text, View } from 'react-native';
 import AddBookScreen from '../screens/AddBookScreen';
@@ -18,26 +17,35 @@ export default function Index() {
   const [gender, setGender] = useState('F');
   const [country, setCountry] = useState('');
   const [toRead, setToRead] = useState(false);
+  const [highlights, setHighlights] = useState([]);
 
+  // Cargar libros e recortes ao iniciar dende o localStorage da web
   useEffect(() => {
     loadBooks();
+    loadHighlights();
   }, []);
 
-  const loadBooks = async () => {
-    const data = await AsyncStorage.getItem('books');
+  // CORRECCIÓN WEB: Lectura instantánea sen "async" nin "await"
+  const loadBooks = () => {
+    const data = localStorage.getItem('books');
     if (data) setBooks(JSON.parse(data));
   };
 
-  const updateBooksList = (newList) => {
-  saveBooks(newList);
+  const loadHighlights = () => {
+    const data = localStorage.getItem('my_highlights');
+    if (data) setHighlights(JSON.parse(data));
   };
 
-  const saveBooks = async (newBooks) => {
-    await AsyncStorage.setItem('books', JSON.stringify(newBooks));
+  const updateBooksList = (newList) => {
+    saveBooks(newList);
+  };
+
+  // CORRECCIÓN WEB: Gardado directo no navegador sen "async"
+  const saveBooks = (newBooks) => {
+    localStorage.setItem('books', JSON.stringify(newBooks));
     setBooks(newBooks);
   };
 
-  // Logica de agregar, eliminar, etc... (Mantena igual)
   const addBook = () => {
     if (!title.trim() || !author.trim() || !country.trim()) return;
 
@@ -70,56 +78,51 @@ export default function Index() {
     return acc;
   }, {});
 
-  const [highlights, setHighlights] = useState([]);
-
-  // Cando cargues a app (useEffect), recupera tamén os highlights
-  // Cando queiras gardar:
-  const saveHighlights = async (newHighlights) => {
+  // CORRECCIÓN WEB: Gardar os recortes no localStorage limpo
+  const saveHighlights = (newHighlights) => {
     setHighlights(newHighlights);
     try {
-      await AsyncStorage.setItem('my_highlights', JSON.stringify(newHighlights));
+      localStorage.setItem('my_highlights', JSON.stringify(newHighlights));
     } catch (e) {
-      Alert.alert("Error", "Non se puideron gardar os recortes");
+      console.error("Error: Non se puideron gardar os recortes");
     }
   };
 
-
-
   // --- Screens ---
-    if (screen === 'add') {
-  return (
-    <AddBookScreen
-      title={title}
-      setTitle={setTitle}
-      author={author}
-      setAuthor={setAuthor}
-      country={country}
-      setCountry={setCountry}
-      year={year}
-      setYear={setYear}
-      gender={gender}
-      setGender={setGender}
-      toRead={toRead}
-      setToRead={setToRead}
-      yearsList={yearsList}
-      addBook={addBook}
-      setScreen={setScreen}
-      styles={styles}
-    />
-  );
-}
+  if (screen === 'add') {
+    return (
+      <AddBookScreen
+        title={title}
+        setTitle={setTitle}
+        author={author}
+        setAuthor={setAuthor}
+        country={country}
+        setCountry={setCountry}
+        year={year}
+        setYear={setYear}
+        gender={gender}
+        setGender={setGender}
+        toRead={toRead}
+        setToRead={setToRead}
+        yearsList={yearsList}
+        addBook={addBook}
+        setScreen={setScreen}
+        styles={styles}
+      />
+    );
+  }
 
-// ENGADE ESTO AQUÍ:
-if (screen === 'clippings') {
-  return (
-    <Clippings 
-      setScreen={setScreen} 
-      styles={styles} 
-      highlights={highlights}       // Recortes actuais
-      saveHighlights={saveHighlights} // Función para gardar
-    />
-  );
-}
+  if (screen === 'clippings') {
+    return (
+      <Clippings 
+        setScreen={setScreen} 
+        styles={styles} 
+        highlights={highlights}       
+        saveHighlights={saveHighlights} 
+      />
+    );
+  }
+
   if (screen === 'list') {
     return (
       <ScreenList
@@ -145,7 +148,6 @@ if (screen === 'clippings') {
       <View style={{ height: 20 }} />
       
       <Button title="See My Books" onPress={() => setScreen('list')} />
-
       <View style={{ height: 20 }} />
       
       <Button title="ReadWise" onPress={() => setScreen('clippings')} />
@@ -153,13 +155,9 @@ if (screen === 'clippings') {
   );
 }
 
-
-
 const chartConfig = {
   backgroundGradientFrom: "#25292e",
   backgroundGradientTo: "#25292e",
   color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
 };
-
-
