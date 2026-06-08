@@ -1,0 +1,22 @@
+{
+  "short_name": "Bookiest",
+  "name": "Bookiest",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#8e41e5",
+  "background_color": "#25292e",
+  "orientation": "portrait"
+}
