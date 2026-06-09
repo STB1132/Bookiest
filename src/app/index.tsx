@@ -1,12 +1,14 @@
+
 import React, { useEffect, useState } from 'react';
-import { Button, Dimensions, Text, View } from 'react-native';
+import { Button, Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import AddBookScreen from '../screens/AddBookScreen';
+import Clippings from '../screens/Clippings';
 import ScreenList from '../screens/ScreenList';
 import { styles } from '../styles/styles';
 
 // IMPORTAMOS FIREBASE
-import { signInWithPopup, signOut } from 'firebase/auth'; // 👈 IMPORTANTE: Engadido para Google
-import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { signInWithPopup, signOut } from 'firebase/auth';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../components/firebase';
 
 const screenWidth = Dimensions.get("window").width;
@@ -29,21 +31,18 @@ export default function Index() {
   const [country, setCountry] = useState('');
   const [toRead, setToRead] = useState(false);
   const [highlights, setHighlights] = useState([]);
-  
-  // O estado para gardar o usuario de Google
   const [user, setUser] = useState<any>(null); 
 
   useEffect(() => {
     if (user) {
       loadBooks();
     }
-  }, [user]); // Recarga os libros só cando o usuario inicia sesión
+  }, [user]);
 
-  // 1. CARGAR LIBROS DENDE FIREBASE (FILTRADOS POLO USUARIO)
+  // 1. CARGAR LIBROS DENDE FIREBASE
   const loadBooks = async () => {
     if (!user) return;
     try {
-      // 👈 Filtramos para traer só os libros que teñen o userId do usuario actual
       const q = query(collection(db, "books"), where("userId", "==", user.uid));
       const querySnapshot = await getDocs(q);
       const booksList = [];
@@ -56,7 +55,7 @@ export default function Index() {
     }
   };
 
-  // 2. INICIAR E PECHAR SESIÓN CON GOOGLE
+  // 2. AUTENTICACIÓN GOOGLE
   const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -77,13 +76,9 @@ export default function Index() {
     }
   };
 
-  // 3. ENGADIR UN LIBRO DIRECTAMENTE EN FIREBASE
+  // 3. ENGADIR LIBRO
   const addBook = async () => {
-    console.log("Premeches o botón de gardar!");
-    if (!title.trim() || !author.trim() || !country.trim()) {
-      console.warn("Garda cancelada: Faltan campos.");
-      return;
-    }
+    if (!title.trim() || !author.trim() || !country.trim()) return;
 
     const newBook = { 
       title, 
@@ -92,16 +87,12 @@ export default function Index() {
       gender, 
       country, 
       toRead,
-      userId: user.uid // 👈 CORRIXIDO: Agora usa 'user.uid' de forma segura
+      userId: user.uid 
     };
 
     try {
-      console.log("Intentando conectar con Firebase...");
       await addDoc(collection(db, "books"), newBook);
-      console.log("Libro gardado con éxito!");
-      
       await loadBooks();
-
       setTitle('');
       setAuthor('');
       setYear('2024');
@@ -110,11 +101,11 @@ export default function Index() {
       setToRead(false);
       setScreen('home');
     } catch (error) {
-      console.error("Erro real ao gardar o libro:", error);
+      console.error("Erro ao gardar o libro:", error);
     }
   };
 
-  // 4. BORRAR UN LIBRO DENDE FIREBASE
+  // 4. BORRAR LIBRO
   const deleteBook = async (index) => {
     const bookToDelete = books[index];
     if (!bookToDelete.id) return;
@@ -124,6 +115,27 @@ export default function Index() {
       setBooks(books.filter((_, i) => i !== index));
     } catch (error) {
       console.error("Erro ao borrar o libro:", error);
+    }
+  };
+
+  // 5. ACTUALIZAR ESTADO DE LER / PENDENTE
+  const toggleToRead = async (index) => {
+    const bookToUpdate = books[index];
+    if (!bookToUpdate.id) return;
+
+    const nuevoEstado = !bookToUpdate.toRead;
+
+    try {
+      const bookRef = doc(db, "books", bookToUpdate.id);
+      await updateDoc(bookRef, { toRead: nuevoEstado });
+
+      const updatedBooks = [...books];
+      updatedBooks[index].toRead = nuevoEstado;
+      setBooks(updatedBooks);
+      
+      console.log("Estado cambiado en Firebase!");
+    } catch (error) {
+      console.error("Erro ao cambiar o estado do libro:", error);
     }
   };
 
@@ -140,9 +152,7 @@ export default function Index() {
     return acc;
   }, {});
 
-  // --- CONTROL DE PANTALLAS ---
-
-  // 👈 SE NON HAI USUARIO, SE MOSTRA A PANTALLA DE LOGIN CON GOOGLE
+  // PANTALLA DE LOGIN
   if (!user) {
     return (
       <View style={[styles.homeContainer, { justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
@@ -155,6 +165,7 @@ export default function Index() {
     );
   }
 
+  // PANTALLA ENGADIR
   if (screen === 'add') {
     return (
       <AddBookScreen
@@ -178,11 +189,13 @@ export default function Index() {
     );
   }
 
+  // PANTALLA LISTA
   if (screen === 'list') {
     return (
       <ScreenList
         books={books}
         deleteBook={deleteBook}
+        toggleToRead={toggleToRead} // 👈 Conectado aquí correctamente
         setScreen={setScreen}
         styles={styles}
         countryCounts={countryCounts}
@@ -193,18 +206,44 @@ export default function Index() {
       />
     );
   }
+  // PANTALLA CLIPPINGS (KINDLE HIGHLIGHTS)
+  if (screen === 'clippings') {
+    return (
+      <Clippings
+        setScreen={setScreen}
+        styles={styles}
+        highlights={highlights}
+        saveHighlights={setHighlights} // Pásalle o estado local para poder actualizalos
+      />
+    );
+  }
 
+  // MENU PRINCIPAL
   return (
     <View style={styles.homeContainer}>
       <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
       <Text style={{ marginBottom: 30, color: 'lightgray' }}>Ola, {user.displayName}!</Text>
       
-      <Button title="Log Single Book" onPress={() => setScreen('add')} />
-      <View style={{ height: 20 }} />
-      <Button title="See My Books" onPress={() => setScreen('list')} />
-      
+      <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('add')}>
+        <Text style={styles.primaryButtonText}> Log single book </Text>
+      </TouchableOpacity>
+      <View style={{ height: 15 }} />
+     
+      <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('list')}>
+        <Text style={styles.primaryButtonText}> See my books </Text>
+      </TouchableOpacity>
+      <View style={{ height: 15 }} />
+
+      <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('clippings')}>
+        <Text style={styles.primaryButtonText}> My highlights </Text>
+      </TouchableOpacity>
       <View style={{ height: 60 }} />
-      <Button title="Pechar sesión" color="red" onPress={logout} />
+
+      {/* BOTÓN DE VOLVER MODERNO ABAIXO */}
+      <TouchableOpacity style={styles.secondaryButton} onPress={logout}>
+        <Text style={styles.secondaryButtonText}>LogOut, dw :I</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

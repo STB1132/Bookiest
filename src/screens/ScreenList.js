@@ -8,6 +8,7 @@ import StatsPanel from '../components/StatsPanel';
 export default function ScreenList({
   books,
   deleteBook,
+  toggleToRead, // 👈 1. RECUPERAMOS A NOVA FUNCIÓN DAS PROPIEDADES
   setScreen,
   styles,
   chartConfig,
@@ -19,7 +20,7 @@ export default function ScreenList({
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 1. Lóxica de filtrado protexida contra valores baleiros
+  // Lóxica de filtrado protexida contra valores baleiros
   const filteredBooks = books.filter(book => {
     const matchesToRead = filterToRead ? book.toRead === true : true;
     if (!matchesToRead) return false;
@@ -27,7 +28,6 @@ export default function ScreenList({
     const query = searchQuery.toLowerCase();
     if (!query) return true;
 
-    // O signo "?" asegura que se o título, autor ou país están baleiros, a app non rompa
     return (
       (book.title?.toLowerCase().includes(query) || false) ||
       (book.author?.toLowerCase().includes(query) || false) ||
@@ -55,18 +55,16 @@ export default function ScreenList({
     }
   };
 
-  // Cambiar o estado do libro entre "To Read" e "Read"
+  // 👈 2. CORRIXIDO: Buscamos a posición real do libro e avisamos a Firebase
   const toggleBookStatus = (item) => {
-    const updatedBooks = [...books];
-    const realIndex = books.findIndex(b => b.title === item.title);
+    const realIndex = books.findIndex(b => b.id === item.id); // Buscamos polo ID único de Firebase
     if (realIndex !== -1) {
-      updatedBooks[realIndex].toRead = !updatedBooks[realIndex].toRead;
-      saveBooks(updatedBooks);
+      toggleToRead(realIndex); // Chamamos á función da nube
     }
   };
 
   const handleIndividualDelete = (item) => {
-    const realIndex = books.findIndex(b => b.title === item.title);
+    const realIndex = books.findIndex(b => b.id === item.id); // Buscamos polo ID único de Firebase
     if (realIndex !== -1) {
       deleteBook(realIndex);
     }
@@ -94,7 +92,7 @@ export default function ScreenList({
       <FlatList
         style={styles.container}
         data={filteredBooks}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()} // Usamos o ID único de Firebase para a lista
         ListHeaderComponent={
           <View>
             <StatsPanel books={books} styles={styles} chartConfig={chartConfig} countryCounts={countryCounts} filterToRead={filterToRead} setFilterToRead={setFilterToRead} />
@@ -149,16 +147,14 @@ export default function ScreenList({
               <View style={{ flex: 1 }}>
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{item.title}</Text>
                 <Text style={{ color: '#aaa', fontSize: 14 }}>{item.author} ({item.country})</Text>
-                {/* Pequena etiqueta de estado en texto */}
                 <Text style={{ color: item.toRead ? '#ff9f43' : '#8e41e5', fontSize: 12, marginTop: 4, fontWeight: '600' }}>
-                  {item.toRead ? '📖 To Read' : '✅ Read'}
+                  {item.toRead ? 'To Read' : 'Read'}
                 </Text>
               </View>
 
-              {/* SÓ DOUS BOTÓNS: Estado e Borrar */}
+              {/* Botóns de Estado e Borrar */}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, zIndex: 20 }}>
                 
-                {/* Botón de Estado Dinámico (Cambia a cor e a icona segundo fagas clic) */}
                 <TouchableOpacity 
                   onPress={() => toggleBookStatus(item)}
                   style={{ 
@@ -176,7 +172,6 @@ export default function ScreenList({
                   />
                 </TouchableOpacity>
 
-                {/* Botón de Borrar (Cores elegantes axustadas á temática escura) */}
                 <TouchableOpacity 
                   onPress={() => handleIndividualDelete(item)}
                   style={{ 

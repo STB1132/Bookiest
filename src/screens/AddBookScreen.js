@@ -1,11 +1,8 @@
+import { Ionicons } from '@expo/vector-icons'; // 👈 IMPORTAMOS AS ICONAS
 import { Picker } from '@react-native-picker/picker';
-import { Button, ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { COUNTRY_DATA } from '../constants/countries'; // Revisa que a ruta sexa exacta
-
-
 import { useState } from 'react';
-
-
+import { ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { COUNTRY_DATA } from '../constants/countries';
 
 export default function AddBookScreen({
   title, setTitle,
@@ -20,15 +17,24 @@ export default function AddBookScreen({
   styles,
 }) {
 
+  const [searchText, setSearchText] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  
+  const filteredCountries = COUNTRY_DATA.filter(item => 
+    item.label.toLowerCase().includes(searchText.toLowerCase()) ||
+    item.value.toLowerCase().includes(searchText.toLowerCase())
+  );
 
-const [searchText, setSearchText] = useState('');
-const [showSuggestions, setShowSuggestions] = useState(false);
-const filteredCountries = COUNTRY_DATA.filter(item => 
-  item.label.toLowerCase().includes(searchText.toLowerCase()) ||
-  item.value.toLowerCase().includes(searchText.toLowerCase())
-);
   return (
     <View style={[styles.container, { justifyContent: 'center' }]}>
+      
+      {/* 👈 FRECHA FLOTANTE SUPERIOR ESQUERDA (Fai exactamente o mesmo que o botón Back) */}
+      <TouchableOpacity 
+        style={styles.backButtonFloating} 
+        onPress={() => setScreen('home')}
+      >
+        <Ionicons name="arrow-back" size={22} color="#fff" />
+      </TouchableOpacity>
       
       <Text style={styles.title}>Log a Book</Text>
 
@@ -49,53 +55,51 @@ const filteredCountries = COUNTRY_DATA.filter(item =>
         placeholder="Author"
         placeholderTextColor="#666"
       />
-                {/* Contedor con ZIndex alto para que o menú non quede debaixo doutros inputs */}
-        <View style={{ zIndex: 3000, position: 'relative', marginBottom: 15 }}>
+
+      {/* Contedor do País */}
+      <View style={{ zIndex: 3000, position: 'relative', marginBottom: 15 }}>
         <Text style={styles.label}>Country</Text>
-        
         <TextInput
-            style={styles.input}
-            placeholder="Search country (e.g. Spain...)"
-            placeholderTextColor="#777"
-            value={searchText}
-            onChangeText={(text) => {
+          style={styles.input}
+          placeholder="Search country (e.g. Spain...)"
+          placeholderTextColor="#777"
+          value={searchText}
+          onChangeText={(text) => {
             setSearchText(text);
             setShowSuggestions(true);
-            }}
-            onFocus={() => setShowSuggestions(true)}
+          }}
+          onFocus={() => setShowSuggestions(true)}
         />
 
         {/* MENÚ DESPREGABLE */}
         {showSuggestions && searchText.length > 0 && (
-            <View style={styles.suggestionsContainer}>
+          <View style={styles.suggestionsContainer}>
             <ScrollView 
-                style={{ maxHeight: 200 }} 
-                keyboardShouldPersistTaps="handled" // Importante para que o toque funcione co teclado aberto
+              style={{ maxHeight: 200 }} 
+              keyboardShouldPersistTaps="handled"
             >
-                {filteredCountries.map((item) => (
+              {filteredCountries.map((item) => (
                 <TouchableOpacity 
-                    key={item.value} 
-                    style={styles.suggestionItem}
-                    onPress={() => {
+                  key={item.value} 
+                  style={styles.suggestionItem}
+                  onPress={() => {
                     setCountry(item.value);
                     setSearchText(item.label);
                     setShowSuggestions(false);
-                    }}
+                  }}
                 >
-                    <Text style={styles.suggestionText}>{item.label}</Text>
+                  <Text style={styles.suggestionText}>{item.label}</Text>
                 </TouchableOpacity>
-                ))}
-                {filteredCountries.length === 0 && (
+              ))}
+              {filteredCountries.length === 0 && (
                 <View style={styles.suggestionItem}>
-                    <Text style={{ color: '#888', fontStyle: 'italic' }}>No countries found</Text>
+                  <Text style={{ color: '#888', fontStyle: 'italic' }}>No countries found</Text>
                 </View>
-                )}
+              )}
             </ScrollView>
-            </View>
+          </View>
         )}
-        </View>
-
-
+      </View>
 
       <Text style={styles.label}>Year</Text>
       <View style={styles.pickerWrapper}>
@@ -109,26 +113,36 @@ const filteredCountries = COUNTRY_DATA.filter(item =>
           ))}
         </Picker>
       </View>
+
       <Text style={styles.label}>Author Gender</Text>
-        <View style={styles.pickerWrapper}>
-          <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker} itemStyle={styles.pickerItem}>
-            <Picker.Item label="Female (F)" value="F" />
-            <Picker.Item label="Male (M)" value="M" />
-            <Picker.Item label="Non-Binary (NB)" value="NB" />
-          </Picker>
-        </View>
-        <View style={{ marginTop: 20 }}>
+      <View style={styles.pickerWrapper}>
+        <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker} >
+          <Picker.Item label="Female (F)" value="F" />
+          <Picker.Item label="Male (M)" value="M" />
+          <Picker.Item label="Non-Binary (NB)" value="NB" />
+        </Picker>
       </View>
 
       <Text style={styles.label}>To Read?</Text>
       <View style={{ marginTop: 10 }}></View>
       <Switch value={toRead} onValueChange={setToRead} />
-      <View style={{ marginTop: 20 }}>
+      
+      <View style={{ marginTop: 20 }}></View>
 
-      </View>
+      {/* BOTÓN DE GARDAR MODERNO */}
+      <TouchableOpacity style={styles.primaryButton} onPress={addBook}>
+        <Text style={styles.primaryButtonText}>Save Book</Text>
+      </TouchableOpacity>
 
-      <Button title="Save Book" onPress={addBook} />
-      <Button title="Back" onPress={() => setScreen('home')} />
+      <View style={{ marginTop: 20 }}></View>
+      
+      {/* BOTÓN DE VOLVER MODERNO ABAIXO */}
+      <TouchableOpacity style={styles.secondaryButton} onPress={() => setScreen('home')}>
+        <Text style={styles.secondaryButtonText}>Back</Text>
+      </TouchableOpacity>
+
+      <View style={{ marginTop: 20 }}></View>
+
     </View>
   );
 }

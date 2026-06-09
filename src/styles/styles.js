@@ -7,10 +7,10 @@ export const styles = StyleSheet.create({
   title: { color: '#fff', fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginTop: 20 },
   label: { color: '#fff', marginTop: 10, fontWeight: '600' },
   chartLabel: { color: '#fff', fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginTop: 20 },
-  input: { borderWidth: 1, borderColor: '#555', color: '#fff', padding: 12, borderRadius: 8, marginTop: 5 },
-  pickerWrapper: { backgroundColor: '#555', borderRadius: 20, marginVertical: 10, height: 55, justifyContent: 'center', overflow: 'hidden' },
-  picker: { width: '100%' },
-  pickerItem: { fontSize: 16, height: 40, color: '#000' },
+  input: { borderWidth: 1, borderColor: '#555', color: '#fff', padding: 19, borderRadius: 12, marginTop: 5 },
+  pickerWrapper: { backgroundColor: '#555', borderRadius: 20, marginVertical: 10, height: 10, justifyContent: 'center', overflow: 'hidden' },
+  picker: {borderRadius: 20,  marginVertical: 30,    height: '100%',  width: '100%' },
+  pickerItem: { fontSize: 16, height: 40, color: '#c50d0d' },
   bookItem: { borderBottomWidth: 1, borderBottomColor: '#333', paddingVertical: 10 },
   bookTitle: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
   bookSub: { color: '#bbb', fontSize: 13 },
@@ -34,8 +34,41 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',    
   },
 
+    // Botón principal de gardar (Morado elegante)
+  primaryButton: {
+    backgroundColor: '#4146e563',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    cursor: 'pointer', // Para que na web saia a man ao pasar por riba
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  // Botón secundario de volver (Fondo escuro con bordo)
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#444',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    cursor: 'pointer',
+  },
+  secondaryButtonText: {
+    color: '#aaa',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+
   badge: {
-    backgroundColor: '#8e41e5',
+    backgroundColor: '#8e41e5fc',
     paddingHorizontal: 5,    
     paddingVertical: 0,
     borderRadius: 4,         
