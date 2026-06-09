@@ -2,11 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'; // 👈 IMPORTANTE
 import { initializeFirestore } from 'firebase/firestore';
 
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 
 // Lemos os datos en vivo dende o arquivo .env sen poñer os textos reais aquí
 const firebaseConfig = {
