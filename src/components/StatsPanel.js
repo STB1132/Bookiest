@@ -5,8 +5,8 @@ import WorldMap from './WorldMap';
 
 export default function StatsPanel({ books, styles, countryCounts, chartConfig,   filterToRead, setFilterToRead  }) {
   const pieData = useMemo(() => ([
-    { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#d6639d", legendFontColor: "#fff" },
-    { name: "M", population: books.filter(b => b.gender === 'M').length, color: "#7e1395", legendFontColor: "#fff" },
+    { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#6b63d6", legendFontColor: "#fff" },
+    { name: "M", population: books.filter(b => b.gender === 'M').length, color: "#3a1395b6", legendFontColor: "#fff" },
     { name: "NB", population: books.filter(b => b.gender === 'NB').length, color: "#8e41e5", legendFontColor: "#fff" },
   ]), [books]);
 
@@ -86,7 +86,7 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig, 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
                 <Text style={{ color: '#9CA3AF', fontSize: 13 }}>Peak Year</Text>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ color: '#8e41e5', fontWeight: 'bold' }}>{timelineStats?.mostPopular || '—'}</Text>
+                  <Text style={{ color: '#6d8cda', fontWeight: 'bold' }}>{timelineStats?.mostPopular || '—'}</Text>
                   {timelineStats && (
                     <Text style={{ color: '#6B7280', fontSize: 10 }}>({timelineStats.count} books)</Text>
                   )}
@@ -110,7 +110,7 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig, 
             <View style={{ height: 8, backgroundColor: '#374151', borderRadius: 4, overflow: 'hidden', width: '100%' }}>
               <View style={{ 
                 height: '100%', 
-                backgroundColor: '#8e41e5', 
+                backgroundColor: '#2d52ae', 
                 width: `${progress * 100}%`,
                 borderRadius: 4 
               }} />
@@ -120,14 +120,14 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig, 
             <TouchableOpacity 
               onPress={() => setFilterToRead(!filterToRead)}
               style={{ 
-                backgroundColor: filterToRead ? "#8e41e5" : "#444", // Cor do fondo cambia aquí
+                backgroundColor: filterToRead ? "#002fa7" : "#444", // Cor do fondo cambia aquí
                 paddingVertical: 4, 
                 paddingHorizontal: 8, 
                 borderRadius: 6 
               }}
             >
               <Text style={{ 
-                color: filterToRead ? "#fff" : "#f1c40f", // Texto branco se está activo, amarelo se non
+                color: filterToRead ? "#ffffff" : "#f2f7f9", // Texto branco se está activo, amarelo se non
                 fontSize: 11, 
                 fontWeight: 'bold' 
               }}>

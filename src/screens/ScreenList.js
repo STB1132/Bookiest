@@ -8,7 +8,7 @@ import StatsPanel from '../components/StatsPanel';
 export default function ScreenList({
   books,
   deleteBook,
-  toggleToRead, // 👈 1. RECUPERAMOS A NOVA FUNCIÓN DAS PROPIEDADES
+  toggleToRead,
   setScreen,
   styles,
   chartConfig,
@@ -20,7 +20,6 @@ export default function ScreenList({
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Lóxica de filtrado protexida contra valores baleiros
   const filteredBooks = books.filter(book => {
     const matchesToRead = filterToRead ? book.toRead === true : true;
     if (!matchesToRead) return false;
@@ -36,7 +35,6 @@ export default function ScreenList({
       (book.readInYear?.toString().includes(query) || false)
     );
   });
-
 
   const bulkUploadBooks = async () => {
     try {
@@ -55,134 +53,92 @@ export default function ScreenList({
     }
   };
 
-  // 👈 2. CORRIXIDO: Buscamos a posición real do libro e avisamos a Firebase
   const toggleBookStatus = (item) => {
-    const realIndex = books.findIndex(b => b.id === item.id); // Buscamos polo ID único de Firebase
+    const realIndex = books.findIndex(b => b.id === item.id);
     if (realIndex !== -1) {
-      toggleToRead(realIndex); // Chamamos á función da nube
+      toggleToRead(realIndex);
     }
   };
 
   const handleIndividualDelete = (item) => {
-    const realIndex = books.findIndex(b => b.id === item.id); // Buscamos polo ID único de Firebase
+    const realIndex = books.findIndex(b => b.id === item.id);
     if (realIndex !== -1) {
       deleteBook(realIndex);
     }
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#25292e' }}>
+    <View style={styles.listMainContainer}>
+      
       {/* Botón de volver */}
-      <TouchableOpacity style={styles.backButtonFloating} onPress={() => setScreen('home')}>
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>←</Text>
+      <TouchableOpacity style={styles.backButtonFloatingWithBackground} onPress={() => setScreen('home')}>
+        <Ionicons name="arrow-back" size={20} color="#fff" />
       </TouchableOpacity>
         
       {/* Menú de ferramentas superior */}
-      <TouchableOpacity 
-        style={{
-          position: 'absolute', top: 50, right: 20, zIndex: 10,
-          backgroundColor: "rgba(0,0,0,0.5)",
-          width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center'
-        }} 
-        onPress={bulkUploadBooks}
-      >
-        <Ionicons name="ellipsis-horizontal" size={22} color="#fff" />
+      <TouchableOpacity style={styles.topToolsButton} onPress={bulkUploadBooks}>
+        <Ionicons name="ellipsis-horizontal" size={20} color="#fff" />
       </TouchableOpacity>
 
       <FlatList
         style={styles.container}
         data={filteredBooks}
-        keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()} // Usamos o ID único de Firebase para a lista
+        keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()}
         ListHeaderComponent={
           <View>
             <StatsPanel books={books} styles={styles} chartConfig={chartConfig} countryCounts={countryCounts} filterToRead={filterToRead} setFilterToRead={setFilterToRead} />
-            <View style={{ paddingHorizontal: 20, marginTop: 0 }}>
-              <View style={{ 
-                flexDirection: 'row', 
-                alignItems: 'center', 
-                backgroundColor: '#1a1d21', 
-                borderRadius: 12, 
-                paddingHorizontal: 12,
-                borderWidth: 1,
-                borderColor: '#333'
-              }}>
-                <Ionicons name="search" size={18} color="#666" />
+            <View style={styles.searchBarWrapper}>
+              <View style={styles.searchBarInner}>
+                <Ionicons name="search" size={20} color="#64748b" />
                 <TextInput
-                  style={{
-                    flex: 1,
-                    color: '#fff',
-                    paddingVertical: 12,
-                    paddingHorizontal: 10,
-                    fontSize: 14
-                  }}
+                  style={styles.searchBarInput}
                   placeholder="Search title, author, country or year..."
-                  placeholderTextColor="#666"
+                  placeholderTextColor="#64748b"
                   value={searchQuery}
                   onChangeText={setSearchQuery}
                 />
               </View>
             </View>
 
-            <View style={{ paddingVertical: 11, borderBottomWidth: 1, borderBottomColor: '#333', alignItems: 'center' }}>
-              <Text style={{ color: '#888', fontSize: 12, marginTop: 8 }}>{filteredBooks.length} books found</Text>
+            <View style={styles.booksFoundWrapper}>
+              <Text style={styles.booksFoundText}>{filteredBooks.length} books found</Text>
             </View>
           </View>
         }
         renderItem={({ item }) => {
           return (
-            <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              backgroundColor: '#1a1d21',
-              padding: 15,
-              marginVertical: 5,
-              marginHorizontal: 20,
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: '#333',
-              zIndex: 5
-            }}>
+            <View style={styles.bookListItemCard}>
               {/* Información do libro */}
-              <View style={{ flex: 1 }}>
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{item.title}</Text>
-                <Text style={{ color: '#aaa', fontSize: 14 }}>{item.author} ({item.country})</Text>
-                <Text style={{ color: item.toRead ? '#ff9f43' : '#8e41e5', fontSize: 12, marginTop: 4, fontWeight: '600' }}>
-                  {item.toRead ? 'To Read' : 'Read'}
-                </Text>
+              <View style={styles.bookInfoColumn}>
+                <Text style={styles.bookListItemTitle}>{item.title}</Text>
+                <Text style={styles.bookListItemSub}>{item.author} ({item.country})</Text>
+                
+                {/* Badge de estado (To Read / Read) */}
+                <View style={item.toRead ? styles.badgeStateToRead : styles.badgeStateRead}>
+                  <Text style={styles.badgeStateText}>
+                    {item.toRead ? 'To Read' : 'Read'}
+                  </Text>
+                </View>
               </View>
 
               {/* Botóns de Estado e Borrar */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, zIndex: 20 }}>
+              <View style={styles.listActionsWrapper}>
                 
+                {/* Botón de Estado */}
                 <TouchableOpacity 
                   onPress={() => toggleBookStatus(item)}
-                  style={{ 
-                    padding: 10, 
-                    backgroundColor: item.toRead ? 'rgba(255, 159, 67, 0.15)' : 'rgba(142, 65, 229, 0.15)', 
-                    borderRadius: 8,
-                    borderWidth: 1,
-                    borderColor: item.toRead ? '#ff9f43' : '#8e41e5'
-                  }}
+                  style={item.toRead ? styles.actionBtnStatusToRead : styles.actionBtnStatusRead}
                 >
                   <Ionicons 
-                    name={item.toRead ? "book-outline" : "checkmark-done-circle"} 
+                    name={item.toRead ? "book" : "checkmark-done-circle"} 
                     size={18} 
-                    color={item.toRead ? "#ff9f43" : "#8e41e5"} 
+                    color={item.toRead ? "#5881f7" : "#fff"} 
                   />
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                  onPress={() => handleIndividualDelete(item)}
-                  style={{ 
-                    padding: 10, 
-                    backgroundColor: 'rgba(234, 32, 39, 0.1)', 
-                    borderRadius: 8,
-                    borderWidth: 1,
-                    borderColor: 'rgba(234, 32, 39, 0.4)'
-                  }}
-                >
-                  <Ionicons name="trash-outline" size={18} color="#ea2027" />
+                {/* Botón de Borrar */}
+                <TouchableOpacity onPress={() => handleIndividualDelete(item)} style={styles.actionBtnDelete}>
+                  <Ionicons name="trash-outline" size={18} color="#bc4141" />
                 </TouchableOpacity>
 
               </View>
