@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button, Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import AddBookScreen from '../screens/AddBookScreen';
@@ -13,11 +12,15 @@ import { auth, db, googleProvider } from '../components/firebase';
 
 const screenWidth = Dimensions.get("window").width;
 
+// 👈 CAMBIADO UNICAMENTE ISTO PARA O GRÁFICO CIRCULAR
 const chartConfig = {
-  backgroundGradientFrom: "#25292e",
-  backgroundGradientTo: "#25292e",
-  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  backgroundGradientFrom: "#171a23", // Fondo azul escuro a xogo coas tarxetas
+  backgroundGradientTo: "#171a23",
+  color: (opacity = 1) => `rgba(0, 47, 167, ${opacity})`, // 👈 Círculo de progreso en Azul Klein puro (#002fa7)
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // 👈 Textos e porcentaxes en branco puro
+   propsForLabels: {
+    fontFamily: "sans-serif", // Cambia o Times New Roman por unha fonte limpa e moderna
+  }
 };
 
 export default function Index() {
@@ -195,7 +198,7 @@ export default function Index() {
       <ScreenList
         books={books}
         deleteBook={deleteBook}
-        toggleToRead={toggleToRead} // 👈 Conectado aquí correctamente
+        toggleToRead={toggleToRead}
         setScreen={setScreen}
         styles={styles}
         countryCounts={countryCounts}
@@ -213,7 +216,7 @@ export default function Index() {
         setScreen={setScreen}
         styles={styles}
         highlights={highlights}
-        saveHighlights={setHighlights} // Pásalle o estado local para poder actualizalos
+        saveHighlights={setHighlights}
       />
     );
   }
@@ -239,7 +242,6 @@ export default function Index() {
       </TouchableOpacity>
       <View style={{ height: 60 }} />
 
-      {/* BOTÓN DE VOLVER MODERNO ABAIXO */}
       <TouchableOpacity style={styles.secondaryButton} onPress={logout}>
         <Text style={styles.secondaryButtonText}>LogOut, dw :I</Text>
       </TouchableOpacity>

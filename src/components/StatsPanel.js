@@ -5,9 +5,9 @@ import WorldMap from './WorldMap';
 
 export default function StatsPanel({ books, styles, countryCounts, chartConfig,   filterToRead, setFilterToRead  }) {
   const pieData = useMemo(() => ([
-    { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#6b63d6", legendFontColor: "#fff" },
-    { name: "M", population: books.filter(b => b.gender === 'M').length, color: "#3a1395b6", legendFontColor: "#fff" },
-    { name: "NB", population: books.filter(b => b.gender === 'NB').length, color: "#8e41e5", legendFontColor: "#fff" },
+    { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#0240dd", legendFontColor: "#fff", legendFontFamily: "sans-serif", legendFontSize: 11 }, // 👈 Engadido legendFontSize
+    { name: "M", population: books.filter(b => b.gender === 'M').length, color: "#b7de28", legendFontColor: "#fff", legendFontFamily: "sans-serif", legendFontSize: 11 }, // 👈 Engadido legendFontSize
+    { name: "NB", population: books.filter(b => b.gender === 'NB').length, color: "#475569", legendFontColor: "#fff", legendFontFamily: "sans-serif", legendFontSize: 11 }, // 👈 Engadido legendFontSize
   ]), [books]);
 
   const currentYear = new Date().getFullYear();

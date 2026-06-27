@@ -23,7 +23,8 @@ export const styles = StyleSheet.create({
   label: { 
     color: '#fff', 
     marginTop: 10, 
-    fontWeight: '600' 
+    fontWeight: '600', 
+    fontFamily: 'SofiaSansCondensed-SemiBold'
   },
   input: { 
     borderWidth: 1, 
