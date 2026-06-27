@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'SofiaSansCondensed-SemiBold'
   },
   secondaryButton: {
     backgroundColor: 'transparent',
@@ -61,11 +62,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 12,
     cursor: 'pointer',
+
   },
   secondaryButtonText: {
     color: '#94a3b8',
     fontSize: 16,
     fontWeight: '600',
+     fontFamily: 'SofiaSansCondensed-SemiBold'
   },
 
   // --- SELECTORES (PICKERS) CORRIXIDOS SEN ÓVALO GRIS ---
@@ -324,7 +327,10 @@ export const styles = StyleSheet.create({
   },
 
   // --- VESTIXIOS (Cousas antigas mantidas por se o código as busca) ---
-  bookItem: { borderBottomWidth: 1, borderBottomColor: '#171a23', paddingVertical: 10 },
+  bookItem: { 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#171a23', 
+    paddingVertical: 10 },
   bookTitle: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
   bookSub: { color: '#94a3b8', fontSize: 13 },
   bookItemRow: { flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#171a23', paddingVertical: 10 },
