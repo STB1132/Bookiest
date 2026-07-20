@@ -29,7 +29,7 @@ export default function WorldMap({ countryCounts }) {
               key={code}
               anchor={[country.latitude, country.longitude]}
               payload={country.name}
-              color="#8e41e5" // El color morado de tus libros
+              color="#8b88d3" // El color morado de tus libros
               onClick={({ event, anchor, payload }) => {
                 alert(`${payload}: ${countryCounts[code]} libros`);
               }}
