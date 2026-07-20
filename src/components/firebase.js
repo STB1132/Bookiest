@@ -1,9 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'; // 👈 IMPORTANTE
-import { initializeFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from 'firebase/firestore';
 
-
-// Lemos os datos en vivo dende o arquivo .env sen poñer os textos reais aquí
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -15,10 +13,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+// SOLUCIÓN AO ERRO DE CONEXIÓN: Nova sintaxe oficial para forzar o Long Polling en redes móbiles
 export const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+  // Movémo-lo forceLongPolling aquí fóra ou mantemos a persistencia estable
+  experimentalForceLongPolling: true, 
 });
 
-// Exportamos as ferramentas de autenticación
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
