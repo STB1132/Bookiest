@@ -16,6 +16,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    if (error) console.error("Font loading error:", error);
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
@@ -25,7 +26,5 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
-    <Stack screenOptions={{ headerShown: false }} />
-  );
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
