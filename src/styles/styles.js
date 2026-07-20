@@ -4,28 +4,26 @@ export const styles = StyleSheet.create({
   // --- ESTILOS XERAIS E PANTALLA PRINCIPAL ---
   container: { 
     flex: 1, 
-    backgroundColor: '#0b0e14', // Azul noite profundo
+    backgroundColor: '#0b0e14', 
     padding: 20 
   },
   homeContainer: { 
     flex: 1, 
-    backgroundColor: '#0b0e14', // Azul noite profundo
+    backgroundColor: '#0b0e14', 
     justifyContent: 'center', 
     padding: 40 
   },
   title: { 
     color: '#fff', 
     fontSize: 28, 
-    fontWeight: 'bold', 
     textAlign: 'center', 
-    fontFamily: 'SofiaSansCondensed-SemiBold',
+    fontFamily: 'SofiaSansCondensed-Bold', // Bold para títulos principales
     marginTop: 20 
   },
   label: { 
     color: '#fff', 
     marginTop: 10, 
-    fontWeight: '600', 
-    fontFamily: 'SofiaSansCondensed-SemiBold'
+    fontFamily: 'SofiaSansCondensed-Medium', // Medium para etiquetas
   },
   input: { 
     borderWidth: 1, 
@@ -34,12 +32,13 @@ export const styles = StyleSheet.create({
     padding: 19, 
     borderRadius: 12, 
     marginTop: 5,
-    backgroundColor: '#171a23' // Inputs integrados co fondo das tarxetas
+    backgroundColor: '#171a23',
+    fontFamily: 'SofiaSansCondensed-Regular' // Regular para entradas de texto
   },
 
   // --- BOTÓNS MODERNOS (PANTALLA HOME E ADD) ---
   primaryButton: {
-    backgroundColor: '#002fa7', // Azul Klein para accións principais
+    backgroundColor: '#002fa7', 
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -50,8 +49,7 @@ export const styles = StyleSheet.create({
   primaryButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'SofiaSansCondensed-SemiBold'
+    fontFamily: 'SofiaSansCondensed-SemiBold' // SemiBold para botones principales
   },
   secondaryButton: {
     backgroundColor: 'transparent',
@@ -63,13 +61,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 12,
     cursor: 'pointer',
-
   },
   secondaryButtonText: {
     color: '#94a3b8',
     fontSize: 16,
-    fontWeight: '600',
-     fontFamily: 'SofiaSansCondensed-SemiBold'
+    fontFamily: 'SofiaSansCondensed-Medium' // Medium para botones secundarios
   },
 
   // --- SELECTORES (PICKERS) CORRIXIDOS SEN ÓVALO GRIS ---
@@ -92,41 +88,39 @@ export const styles = StyleSheet.create({
     outlineStyle: 'none',
     paddingHorizontal: 10,
     cursor: 'pointer',
+    fontFamily: 'SofiaSansCondensed-Regular',
     ...({ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' })
   },
   pickerItem: { 
     fontSize: 16, 
     color: '#fff', 
     backgroundColor: '#171a23',
+    fontFamily: 'SofiaSansCondensed-Regular',
   },
   
   // --- BOTÓN CIRCULAR DE ACUARELA ---
   watercolorButtonContainer: {
-    width: 180,                  // Ancho y alto iguales para hacer un círculo perfecto
+    width: 180,                  
     height: 180,
-    borderRadius: 60,            // La mitad del ancho/alto para renderizar un círculo en React Native
-    overflow: 'hidden',          // Recorta la imagen cuadrada para que encaje dentro del círculo
+    borderRadius: 90, // Corregido: la mitad de 180 es 90 para un círculo perfecto            
+    overflow: 'hidden',          
     alignSelf: 'center',
     marginVertical: 15,
   },
   watercolorButtonImage: {
     width: '100%',
     height: '100%',
-    justifyContent: 'center',    // Centra el texto o icono verticalmente
-    alignItems: 'center',        // Centra el texto o icono horizontalmente
+    justifyContent: 'center',    
+    alignItems: 'center',        
   },
   watercolorButtonText: {
     color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'SofiaSansCondensed-SemiBold',
+    fontSize: 18,
+    fontFamily: 'SofiaSansCondensed-Bold', // Bold para destacar sobre la imagen
     textAlign: 'center',
-    // // Sombra de texto opcional para mejorar legibilidad sobre la acuarela
-    // textShadowColor: 'rgba(0, 0, 0, 0.6)',
-    // textShadowOffset: { width: 1, height: 1 },
-    // textShadowRadius: 3,
   },
-  // --- COMPONENTES DA PANTALLA SCREENLIST (SEN ESTILOS INLINE) ---
+
+  // --- COMPONENTES DA PANTALLA SCREENLIST ---
   listMainContainer: { 
     flex: 1, 
     backgroundColor: '#0b0e14' 
@@ -145,7 +139,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backButtonFloating: { // Mantense por compatibilidade con AddBookScreen
+  backButtonFloating: { 
     position: 'absolute',
     top: 58,                
     left: 20,
@@ -192,7 +186,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     fontSize: 14,
-    outlineStyle: 'none'
+    outlineStyle: 'none',
+    fontFamily: 'SofiaSansCondensed-Light' // Light para el input de búsqueda
   },
   booksFoundWrapper: { 
     paddingVertical: 11, 
@@ -203,7 +198,8 @@ export const styles = StyleSheet.create({
   booksFoundText: { 
     color: '#64748b', 
     fontSize: 12, 
-    marginTop: 8 
+    marginTop: 8,
+    fontFamily: 'SofiaSansCondensed-ExtraLight' // ExtraLight para contadores secundarios
   },
   bookListItemCard: {
     flexDirection: 'row',
@@ -224,16 +220,17 @@ export const styles = StyleSheet.create({
   bookListItemTitle: { 
     color: '#fff', 
     fontSize: 16, 
-    fontWeight: 'bold' 
+    fontFamily: 'SofiaSansCondensed-SemiBold' // SemiBold para el título del libro
   },
   bookListItemSub: { 
     color: '#94a3b8', 
     fontSize: 14, 
-    marginTop: 2 
+    marginTop: 2,
+    fontFamily: 'SofiaSansCondensed-Light' // Light para autor/subtítulos
   },
   badgeStateToRead: {
     alignSelf: 'flex-start',
-    backgroundColor: '#002fa7', // Azul Klein puro para To Read
+    backgroundColor: '#002fa7', 
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
@@ -241,18 +238,18 @@ export const styles = StyleSheet.create({
   },
   badgeStateRead: {
     alignSelf: 'flex-start',
-    backgroundColor: '#262b3c', // Gris azulado integrado para Read
+    backgroundColor: '#262b3c', 
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
     marginTop: 8
   },
   badgeStateText: {
-    color: '#fff', // Texto sempre 100% branco
-    fontSize: 7, 
-    fontWeight: '700',
+    color: '#fff', 
+    fontSize: 8, 
     textTransform: 'uppercase',
-    letterSpacing: 0.5
+    letterSpacing: 0.5,
+    fontFamily: 'SofiaSansCondensed-Bold' // Bold para badges pequeños
   },
   listActionsWrapper: { 
     flexDirection: 'row', 
@@ -286,9 +283,9 @@ export const styles = StyleSheet.create({
   chartLabel: { 
     color: '#fff', 
     fontSize: 18, 
-    fontWeight: 'bold', 
     textAlign: 'center', 
-    marginTop: 20 
+    marginTop: 20,
+    fontFamily: 'SofiaSansCondensed-Bold'
   },
   chartsRow: { 
     flexDirection: 'row', 
@@ -311,13 +308,13 @@ export const styles = StyleSheet.create({
   },
   smallLabel: {
     fontSize: 11,
-    fontWeight: '700',
     color: '#94a3b8',
     textTransform: 'uppercase',
     letterSpacing: 1.2,
     marginBottom: 10, 
     textAlign: 'center',
     width: '100%',
+    fontFamily: 'SofiaSansCondensed-Medium'
   },
 
   // --- BUSCADOR DE PAÍSES (SUGGESTIONS) ---
@@ -350,16 +347,16 @@ export const styles = StyleSheet.create({
   suggestionText: {
     color: '#fff',
     fontSize: 15,
-    fontWeight: '500',
+    fontFamily: 'SofiaSansCondensed-Regular' // Regular para la lista desplegable
   },
 
-  // --- VESTIXIOS (Cousas antigas mantidas por se o código as busca) ---
+  // --- VESTIXIOS ---
   bookItem: { borderBottomWidth: 1, borderBottomColor: '#171a23', paddingVertical: 10 },
-  bookTitle: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-  bookSub: { color: '#94a3b8', fontSize: 13 },
+  bookTitle: { color: '#fff', fontSize: 16, fontFamily: 'SofiaSansCondensed-SemiBold' },
+  bookSub: { color: '#94a3b8', fontSize: 13, fontFamily: 'SofiaSansCondensed-Light' },
   bookItemRow: { flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#171a23', paddingVertical: 10 },
   deleteButton: { width: 40, height: 40 },
-  deleteButtonText: { color: '#ef4444', fontSize: 18, fontWeight: 'bold' },
+  deleteButtonText: { color: '#ef4444', fontSize: 18, fontFamily: 'SofiaSansCondensed-Bold' },
   badge: { backgroundColor: '#2ac4197d', paddingHorizontal: 5, paddingVertical: 0, borderRadius: 4, marginLeft: 8, alignItems: 'center', justifyContent: 'center', display: 'flex' },
-  badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold', lineHeight: 14 }
+  badgeText: { color: '#fff', fontSize: 10, lineHeight: 14, fontFamily: 'SofiaSansCondensed-Bold' }
 });
