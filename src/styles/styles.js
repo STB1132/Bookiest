@@ -8,10 +8,12 @@ export const styles = StyleSheet.create({
     padding: 20 
   },
   homeContainer: { 
-    flex: 1, 
-    backgroundColor: '#0b0e14', 
-    justifyContent: 'center', 
-    padding: 40 
+    flexGrow: 1,                 // Fuerza al ScrollView a ocupar toda la pantalla
+    backgroundColor: '#0b0e14',  // El fondo negro ahora cubrirá toda la pantalla
+    alignItems: 'center',        // Centra los botones horizontalmente
+    paddingHorizontal: 40,
+    paddingTop: 60,              // Espacio superior para que el título no pegue arriba
+    paddingBottom: 40,           // Espacio inferior para poder hacer scroll cómodo hasta el final
   },
   title: { 
     color: '#fff', 
