@@ -10,9 +10,12 @@ export default function RootLayout() {
   // 1. Aquí cargas os teus arquivos de fontes e lles das un nome curto
    // 1. Aquí cargas os teus arquivos de fontes con dous saltos cara atrás (../../)
   const [loaded, error] = useFonts({
-    'SofiaSansCondensed-Regular': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf'),
-    'SofiaSansCondensed-Bold': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Bold.ttf'),
-    'SofiaSansCondensed-SemiBold': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf'),
+  'SofiaSansCondensed-Regular': require('./assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf'),
+    'SofiaSansCondensed-Medium': require('./assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Medium.ttf'),
+    'SofiaSansCondensed-Bold': require('./assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Bold.ttf'),
+    'SofiaSansCondensed-Light': require('./assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Light.ttf'),
+    'SofiaSansCondensed-SemiBold': require('./assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf'),
+    'SofiaSansCondensed-ExtraLight': require('./assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-ExtraLight.ttf'),  
   });
 
 
