@@ -21,7 +21,7 @@ export default function ScreenList({
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredBooks = books.filter(book => {
-    const matchesToRead = filterToRead ? book.toRead === true : true;
+    // const matchesToRead = filterToRead ? book.toRead === true : true;
     if (!matchesToRead) return false;
 
     const query = searchQuery.toLowerCase();
