@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // 1. Añadido ImageBackground al import
-import { Button, Dimensions, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import watercolorBg1 from '../../assets/images/watercolor.png';
 import AddBookScreen from '../screens/AddBookScreen';
@@ -227,56 +228,66 @@ export default function Index() {
 
  // MENU PRINCIPAL
   return (
-    <ScrollView contentContainerStyle={[styles.homeContainer, { paddingVertical: 100 }]}>
-      <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
-      <Text style={{ marginBottom: 30, color: 'lightgray', textAlign: 'center' }}>Ola, {user.displayName}!</Text>
-      
-      <TouchableOpacity 
-        style={styles.watercolorButtonContainer} 
-        activeOpacity={0.8}
-        onPress={() => setScreen('add')}
+    // SafeAreaView asegura que nunca se corte en la parte superior
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0e14' }}>
+      <ScrollView 
+        contentContainerStyle={styles.homeContainer}
+        showsVerticalScrollIndicator={false}
       >
-        <ImageBackground 
-          source={watercolorBg1} 
-          style={styles.watercolorButtonImage}
-          resizeMode="cover"
+        <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
+        <Text style={{ marginBottom: 30, color: 'lightgray', textAlign: 'center' }}>
+          Ola, {user.displayName}!
+        </Text>
+        
+        <TouchableOpacity 
+          style={styles.watercolorButtonContainer} 
+          activeOpacity={0.8}
+          onPress={() => setScreen('add')}
         >
-          <Text style={styles.watercolorButtonText}>Log Single Book</Text>
-        </ImageBackground>
-      </TouchableOpacity> 
+          <ImageBackground 
+            source={watercolorBg1} 
+            style={styles.watercolorButtonImage}
+            resizeMode="cover"
+          >
+            <Text style={styles.watercolorButtonText}>Log Single Book</Text>
+          </ImageBackground>
+        </TouchableOpacity> 
 
-      <TouchableOpacity 
-        style={styles.watercolorButtonContainer} 
-        activeOpacity={0.8}
-        onPress={() => setScreen('list')}
-      >
-        <ImageBackground 
-          source={watercolorBg1} 
-          style={styles.watercolorButtonImage}
-          resizeMode="cover"
+        <TouchableOpacity 
+          style={styles.watercolorButtonContainer} 
+          activeOpacity={0.8}
+          onPress={() => setScreen('list')}
         >
-          <Text style={styles.watercolorButtonText}>See my books</Text>
-        </ImageBackground>
-      </TouchableOpacity> 
+          <ImageBackground 
+            source={watercolorBg1} 
+            style={styles.watercolorButtonImage}
+            resizeMode="cover"
+          >
+            <Text style={styles.watercolorButtonText}>See my books</Text>
+          </ImageBackground>
+        </TouchableOpacity> 
 
-      <TouchableOpacity 
-        style={styles.watercolorButtonContainer} 
-        activeOpacity={0.8}
-        onPress={() => setScreen('clippings')}
-      >
-        <ImageBackground 
-          source={watercolorBg1} 
-          style={styles.watercolorButtonImage}
-          resizeMode="cover"
+        <TouchableOpacity 
+          style={styles.watercolorButtonContainer} 
+          activeOpacity={0.8}
+          onPress={() => setScreen('clippings')}
         >
-          <Text style={styles.watercolorButtonText}>My highlights</Text>
-        </ImageBackground>
-      </TouchableOpacity> 
+          <ImageBackground 
+            source={watercolorBg1} 
+            style={styles.watercolorButtonImage}
+            resizeMode="cover"
+          >
+            <Text style={styles.watercolorButtonText}>My highlights</Text>
+          </ImageBackground>
+        </TouchableOpacity> 
 
-      <TouchableOpacity style={styles.secondaryButton} onPress={logout}>
-        <Text style={styles.secondaryButtonText}>LogOut, dw :I</Text>
-      </TouchableOpacity>
-
-    </ScrollView>
+        <TouchableOpacity 
+          style={[styles.secondaryButton, { width: '100%' }]} 
+          onPress={logout}
+        >
+          <Text style={styles.secondaryButtonText}>LogOut, dw :I</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
