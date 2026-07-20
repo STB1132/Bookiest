@@ -121,7 +121,7 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig, 
               <TouchableOpacity 
                 onPress={() => setFilterToRead(!filterToRead)}
                 style={{ 
-                  backgroundColor: filterToRead ? "#002fa7" : "#444", 
+                  backgroundColor: filterToRead ? "#8b88d3" : "#444", 
                   paddingVertical: 4, 
                   paddingHorizontal: 8, 
                   borderRadius: 6 

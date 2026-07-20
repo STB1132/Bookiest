@@ -182,7 +182,7 @@ export default function ScreenList({
                   <Ionicons 
                     name={item.toRead ? "book" : "checkmark-done-circle"} 
                     size={18} 
-                    color={item.toRead ? "#5881f7" : "#fff"} 
+                    color={item.toRead ? "#8b88d3" : "#fff"} 
                   />
                 </TouchableOpacity>
 
