@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-// 1. Añadido ImageBackground al import
-import { Dimensions, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// 1. Añadido Button y SafeAreaView desde 'react-native'
+import { Button, Dimensions, ImageBackground, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import watercolorBg1 from '../../assets/images/watercolor.png';
 import AddBookScreen from '../screens/AddBookScreen';
@@ -16,14 +15,13 @@ import { auth, db, googleProvider } from '../components/firebase';
 
 const screenWidth = Dimensions.get("window").width;
 
-// 👈 CAMBIADO UNICAMENTE ISTO PARA O GRÁFICO CIRCULAR
 const chartConfig = {
-  backgroundGradientFrom: "#171a23", // Fondo azul escuro a xogo coas tarxetas
+  backgroundGradientFrom: "#171a23",
   backgroundGradientTo: "#171a23",
-  color: (opacity = 1) => `rgba(0, 47, 167, ${opacity})`, // 👈 Círculo de progreso en Azul Klein puro (#002fa7)
-  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // 👈 Textos e porcentaxes en branco puro
+  color: (opacity = 1) => `rgba(0, 47, 167, ${opacity})`,
+  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   propsForLabels: {
-    fontFamily: "sans-serif", // Cambia o Times New Roman por unha fonte limpa e moderna
+    fontFamily: "sans-serif",
   }
 };
 
@@ -46,7 +44,6 @@ export default function Index() {
     }
   }, [user]);
 
-  // 1. CARGAR LIBROS DENDE FIREBASE
   const loadBooks = async () => {
     if (!user) return;
     try {
@@ -62,7 +59,6 @@ export default function Index() {
     }
   };
 
-  // 2. AUTENTICACIÓN GOOGLE
   const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -83,7 +79,6 @@ export default function Index() {
     }
   };
 
-  // 3. ENGADIR LIBRO
   const addBook = async () => {
     if (!title.trim() || !author.trim() || !country.trim()) return;
 
@@ -112,7 +107,6 @@ export default function Index() {
     }
   };
 
-  // 4. BORRAR LIBRO
   const deleteBook = async (index) => {
     const bookToDelete = books[index];
     if (!bookToDelete.id) return;
@@ -125,7 +119,6 @@ export default function Index() {
     }
   };
 
-  // 5. ACTUALIZAR ESTADO DE LER / PENDENTE
   const toggleToRead = async (index) => {
     const bookToUpdate = books[index];
     if (!bookToUpdate.id) return;
@@ -226,12 +219,11 @@ export default function Index() {
     );
   }
 
- // MENU PRINCIPAL
+  // MENU PRINCIPAL
   return (
-    // SafeAreaView asegura que nunca se corte en la parte superior
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0e14' }}>
       <ScrollView 
-        contentContainerStyle={styles.homeContainer}
+        contentContainerStyle={[styles.homeContainer, { flexGrow: 1, paddingVertical: 20 }]}
         showsVerticalScrollIndicator={false}
       >
         <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
