@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Dimensions, ImageBackground, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import watercolorBg1 from '../../assets/images/watercolor.png';
+import watercolorBg2 from '../../assets/images/watercolor2.png';
 import AddBookScreen from '../screens/AddBookScreen';
 import Clippings from '../screens/Clippings';
 import ScreenList from '../screens/ScreenList';
@@ -237,7 +238,7 @@ export default function Index() {
           onPress={() => setScreen('add')}
         >
           <ImageBackground 
-            source={watercolorBg1} 
+            source={watercolorBg2} 
             style={styles.watercolorButtonImage}
             resizeMode="cover"
           >
