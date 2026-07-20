@@ -5,7 +5,7 @@ import WorldMap from './WorldMap';
 
 export default function StatsPanel({ books, styles, countryCounts, chartConfig, filterToRead, setFilterToRead }) {
   const pieData = useMemo(() => ([
-    { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#0240dd", legendFontColor: "#fff", legendFontFamily: "SofiaSansCondensed-Medium", legendFontSize: 11 },
+    { name: "F", population: books.filter(b => b.gender === 'F').length, color: "#2596be", legendFontColor: "#fff", legendFontFamily: "SofiaSansCondensed-Medium", legendFontSize: 11 },
     { name: "M", population: books.filter(b => b.gender === 'M').length, color: "#b7de28", legendFontColor: "#fff", legendFontFamily: "SofiaSansCondensed-Medium", legendFontSize: 11 },
     { name: "NB", population: books.filter(b => b.gender === 'NB').length, color: "#475569", legendFontColor: "#fff", legendFontFamily: "SofiaSansCondensed-Medium", legendFontSize: 11 },
   ]), [books]);
