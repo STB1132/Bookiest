@@ -111,7 +111,7 @@ export default function StatsPanel({ books, styles, countryCounts, chartConfig, 
             <View style={{ height: 8, backgroundColor: '#374151', borderRadius: 4, overflow: 'hidden', width: '100%' }}>
               <View style={{ 
                 height: '100%', 
-                backgroundColor: '#2d52ae', 
+                backgroundColor: '#8b88d3', 
                 width: `${progress * 100}%`,
                 borderRadius: 4 
               }} />
