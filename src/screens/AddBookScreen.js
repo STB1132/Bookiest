@@ -40,7 +40,6 @@ export default function AddBookScreen({
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0e14' }}>
       <ScrollView 
         contentContainerStyle={[styles.container, { paddingBottom: 40, flexGrow: 1 }]}
-        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
         {/* FLECHA FLOTANTE SUPERIOR */}
@@ -94,7 +93,6 @@ export default function AddBookScreen({
             <View style={styles.suggestionsContainer}>
               <ScrollView 
                 style={{ maxHeight: 200 }} 
-                keyboardShouldPersistTaps="handled"
               >
                 {filteredCountries.map((item) => (
                   <TouchableOpacity 
