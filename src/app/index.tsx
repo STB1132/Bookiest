@@ -82,7 +82,16 @@ export default function Index() {
   };
 
   const addBook = async () => {
-    if (!title.trim() || !author.trim() || !country.trim()) return;
+    // CORRECCIÓN: Se falta o país, avisamos cun alert no canto de saír en silencio
+    if (!title.trim() || !author.trim()) {
+      alert("O título e o autor son obrigatorios.");
+      return;
+    }
+    
+    if (!country.trim()) {
+      alert("Por favor, selecciona un país da lista de suxestións.");
+      return;
+    }
 
     const newBook = { 
       title, 
@@ -96,18 +105,24 @@ export default function Index() {
 
     try {
       await addDoc(collection(db, "books"), newBook);
-      await loadBooks();
+      await loadBooks(); // Recarga a lista dende Firebase ao instante
+      
+      // Limpar o formulario
       setTitle('');
       setAuthor('');
       setYear('2024');
       setGender('F');
       setCountry('');
       setToRead(false);
+      
+      // Volvemos ao menú principal
       setScreen('home');
     } catch (error) {
-      console.error("Erro ao gardar o libro:", error);
+      console.error("Erro ao gardar o libro en Firebase:", error);
+      alert("Erro de conexión con Firebase ao gardar.");
     }
   };
+
 
   const deleteBook = async (index) => {
     const bookToDelete = books[index];
