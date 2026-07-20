@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     fontSize: 28, 
     fontWeight: 'bold', 
     textAlign: 'center', 
+    fontFamily: 'SofiaSansCondensed-SemiBold',
     marginTop: 20 
   },
   label: { 
@@ -333,6 +334,6 @@ export const styles = StyleSheet.create({
   bookItemRow: { flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#171a23', paddingVertical: 10 },
   deleteButton: { width: 40, height: 40 },
   deleteButtonText: { color: '#ef4444', fontSize: 18, fontWeight: 'bold' },
-  badge: { backgroundColor: '#002fa7', paddingHorizontal: 5, paddingVertical: 0, borderRadius: 4, marginLeft: 8, alignItems: 'center', justifyContent: 'center', display: 'flex' },
+  badge: { backgroundColor: '#2ac4197d', paddingHorizontal: 5, paddingVertical: 0, borderRadius: 4, marginLeft: 8, alignItems: 'center', justifyContent: 'center', display: 'flex' },
   badgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold', lineHeight: 14 }
 });
