@@ -11,6 +11,7 @@ const firebaseConfig = {
   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 };
 
+console.log(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 
 // SOLUCIÓN AO ERRO DE CONEXIÓN: Nova sintaxe oficial para forzar o Long Polling en redes móbiles
