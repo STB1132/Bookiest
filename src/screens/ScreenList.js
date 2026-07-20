@@ -38,20 +38,51 @@ export default function ScreenList({
 
   const bulkUploadBooks = async () => {
     try {
-      const result = await DocumentPicker.getDocumentAsync({ type: 'application/json' });
-      if (!result.canceled) {
-        const fileUri = result.assets.uri; 
-        const fileContent = await FileSystem.readAsStringAsync(fileUri);
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/json',
+        copyToCacheDirectory: true,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const selectedFile = result.assets[0];
+        let fileContent = '';
+
+        // 1. Compatibilidad para WEB (Netlify)
+        if (selectedFile.file) {
+          fileContent = await selectedFile.file.text();
+        } 
+        // 2. Compatibilidad para Móvil (Expo Native)
+        else if (selectedFile.uri) {
+          fileContent = await FileSystem.readAsStringAsync(selectedFile.uri);
+        }
+
+        if (!fileContent) {
+          console.error('No se pudo leer el archivo.');
+          return;
+        }
+
         const jsonBooks = JSON.parse(fileContent);
+
         if (Array.isArray(jsonBooks)) {
-          const updatedBooks = [...books, ...jsonBooks];
+          // Asignamos un ID único a cada libro si no lo tiene
+          const formattedBooks = jsonBooks.map((b, index) => ({
+            ...b,
+            id: b.id || `${Date.now()}-${index}`,
+            toRead: typeof b.toRead === 'boolean' ? b.toRead : false,
+          }));
+
+          const updatedBooks = [...books, ...formattedBooks];
           saveBooks(updatedBooks);
+        } else {
+          alert('El archivo JSON debe contener un array [] de libros.');
         }
       }
     } catch (err) {
-      console.error(err.message);
+      console.error('Error al importar libros:', err);
+      alert('Error al leer el archivo JSON.');
     }
   };
+
 
   const toggleBookStatus = (item) => {
     const realIndex = books.findIndex(b => b.id === item.id);
