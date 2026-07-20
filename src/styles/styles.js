@@ -232,7 +232,7 @@ export const styles = StyleSheet.create({
   },
   badgeStateToRead: {
     alignSelf: 'flex-start',
-    backgroundColor: '#002fa7', 
+    backgroundColor: '#6d8cda', 
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
@@ -264,7 +264,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 47, 167, 0.2)', 
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#002fa7'
+    borderColor: '#6d8cda'
   },
   actionBtnStatusRead: {
     padding: 10, 
