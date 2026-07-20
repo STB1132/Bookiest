@@ -227,7 +227,7 @@ export default function Index() {
 
  // MENU PRINCIPAL
   return (
-    <ScrollView contentContainerStyle={[styles.homeContainer, { paddingVertical: 40 }]}>
+    <ScrollView contentContainerStyle={[styles.homeContainer, { paddingVertical: 100 }]}>
       <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
       <Text style={{ marginBottom: 30, color: 'lightgray', textAlign: 'center' }}>Ola, {user.displayName}!</Text>
       
