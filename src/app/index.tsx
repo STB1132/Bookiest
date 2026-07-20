@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 // 1. Añadido ImageBackground al import
 import { Button, Dimensions, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
-import watercolorBg from '../assets/images/watercolor.png';
+
+import watercolorBg1 from '../../assets/images/watercolor.png';
 import AddBookScreen from '../screens/AddBookScreen';
 import Clippings from '../screens/Clippings';
 import ScreenList from '../screens/ScreenList';
@@ -236,23 +237,41 @@ export default function Index() {
         onPress={() => setScreen('add')}
       >
         <ImageBackground 
-          source={watercolorBg} 
+          source={watercolorBg1} 
           style={styles.watercolorButtonImage}
           resizeMode="cover"
         >
           <Text style={styles.watercolorButtonText}>Log Single Book</Text>
         </ImageBackground>
       </TouchableOpacity> 
-          
-      <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('list')}>
-        <Text style={styles.primaryButtonText}> See my books </Text>
-      </TouchableOpacity>
-      <View style={{ height: 15 }} />
 
-      <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('clippings')}>
-        <Text style={styles.primaryButtonText}> My highlights </Text>
-      </TouchableOpacity>
-      <View style={{ height: 60 }} />
+      <TouchableOpacity 
+        style={styles.watercolorButtonContainer} 
+        activeOpacity={0.8}
+        onPress={() => setScreen('list')}
+      >
+        <ImageBackground 
+          source={watercolorBg1} 
+          style={styles.watercolorButtonImage}
+          resizeMode="cover"
+        >
+          <Text style={styles.watercolorButtonText}>See my books</Text>
+        </ImageBackground>
+      </TouchableOpacity> 
+
+      <TouchableOpacity 
+        style={styles.watercolorButtonContainer} 
+        activeOpacity={0.8}
+        onPress={() => setScreen('clippings')}
+      >
+        <ImageBackground 
+          source={watercolorBg1} 
+          style={styles.watercolorButtonImage}
+          resizeMode="cover"
+        >
+          <Text style={styles.watercolorButtonText}>My highlights</Text>
+        </ImageBackground>
+      </TouchableOpacity> 
 
       <TouchableOpacity style={styles.secondaryButton} onPress={logout}>
         <Text style={styles.secondaryButtonText}>LogOut, dw :I</Text>
