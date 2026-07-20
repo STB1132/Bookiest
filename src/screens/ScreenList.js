@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { useState } from 'react';
-import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import StatsPanel from '../components/StatsPanel';
 
 export default function ScreenList({
@@ -36,7 +36,47 @@ export default function ScreenList({
     );
   });
 
-  const bulkUploadBooks = async () => {
+    const bulkUploadBooks = async () => {
+    console.log('Iniciando importación...');
+
+    // --- SOLUCIÓN PARA WEB (Netlify) ---
+    if (Platform.OS === 'web') {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+
+      input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+          const text = await file.text();
+          const jsonBooks = JSON.parse(text);
+
+          if (Array.isArray(jsonBooks)) {
+            const formattedBooks = jsonBooks.map((b, index) => ({
+              ...b,
+              id: b.id || `${Date.now()}-${index}`,
+              toRead: typeof b.toRead === 'boolean' ? b.toRead : false,
+            }));
+
+            const updatedBooks = [...books, ...formattedBooks];
+            saveBooks(updatedBooks);
+            alert(`¡Éxito! Se añadieron ${jsonBooks.length} libros.`);
+          } else {
+            alert('El archivo JSON debe ser una lista/array [] de libros.');
+          }
+        } catch (err) {
+          console.error('Error al procesar el JSON en web:', err);
+          alert('El archivo no es un JSON válido.');
+        }
+      };
+
+      input.click(); // Abre el explorador de archivos directamente en la web
+      return;
+    }
+
+    // --- SOLUCIÓN PARA MÓVIL (iOS / Android) ---
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'application/json',
@@ -44,27 +84,11 @@ export default function ScreenList({
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const selectedFile = result.assets[0];
-        let fileContent = '';
-
-        // 1. Compatibilidad para WEB (Netlify)
-        if (selectedFile.file) {
-          fileContent = await selectedFile.file.text();
-        } 
-        // 2. Compatibilidad para Móvil (Expo Native)
-        else if (selectedFile.uri) {
-          fileContent = await FileSystem.readAsStringAsync(selectedFile.uri);
-        }
-
-        if (!fileContent) {
-          console.error('No se pudo leer el archivo.');
-          return;
-        }
-
+        const fileUri = result.assets[0].uri;
+        const fileContent = await FileSystem.readAsStringAsync(fileUri);
         const jsonBooks = JSON.parse(fileContent);
 
         if (Array.isArray(jsonBooks)) {
-          // Asignamos un ID único a cada libro si no lo tiene
           const formattedBooks = jsonBooks.map((b, index) => ({
             ...b,
             id: b.id || `${Date.now()}-${index}`,
@@ -73,13 +97,10 @@ export default function ScreenList({
 
           const updatedBooks = [...books, ...formattedBooks];
           saveBooks(updatedBooks);
-        } else {
-          alert('El archivo JSON debe contener un array [] de libros.');
         }
       }
     } catch (err) {
-      console.error('Error al importar libros:', err);
-      alert('Error al leer el archivo JSON.');
+      console.error('Error en móvil:', err);
     }
   };
 
