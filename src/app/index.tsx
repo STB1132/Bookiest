@@ -4,6 +4,7 @@ import { Button, Dimensions, ImageBackground, SafeAreaView, ScrollView, Text, To
 
 import watercolorBg1 from '../../assets/images/watercolor.png';
 import watercolorBg2 from '../../assets/images/watercolor2.png';
+import watercolorBg3 from '../../assets/images/watercolor3.png';
 import AddBookScreen from '../screens/AddBookScreen';
 import Clippings from '../screens/Clippings';
 import ScreenList from '../screens/ScreenList';
@@ -266,7 +267,7 @@ export default function Index() {
           onPress={() => setScreen('clippings')}
         >
           <ImageBackground 
-            source={watercolorBg1} 
+            source={watercolorBg3} 
             style={styles.watercolorButtonImage}
             resizeMode="cover"
           >
