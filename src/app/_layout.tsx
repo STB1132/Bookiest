@@ -7,12 +7,12 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'SofiaSansCondensed-Regular': require('../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf'),
-    'SofiaSansCondensed-Bold': require('../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Bold.ttf'),
-    'SofiaSansCondensed-SemiBold': require('../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf'),
-    'SofiaSansCondensed-Medium': require('../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Medium.ttf'),
-    'SofiaSansCondensed-Light': require('../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Light.ttf'),
-    'SofiaSansCondensed-ExtraLight': require('../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-ExtraLight.ttf'),
+    'SofiaSansCondensed-Regular': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Regular.ttf'),
+    'SofiaSansCondensed-Bold': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Bold.ttf'),
+    'SofiaSansCondensed-SemiBold': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-SemiBold.ttf'),
+    'SofiaSansCondensed-Medium': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Medium.ttf'),
+    'SofiaSansCondensed-Light': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-Light.ttf'),
+    'SofiaSansCondensed-ExtraLight': require('../../assets/fonts/Sofia_Sans_Condensed/static/SofiaSansCondensed-ExtraLight.ttf'),
   });
 
   useEffect(() => {
