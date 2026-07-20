@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // 1. Añadido ImageBackground al import
-import { Button, Dimensions, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Dimensions, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import watercolorBg1 from '../../assets/images/watercolor.png';
 import AddBookScreen from '../screens/AddBookScreen';
@@ -225,11 +225,11 @@ export default function Index() {
     );
   }
 
-  // MENU PRINCIPAL
+ // MENU PRINCIPAL
   return (
-    <View style={styles.homeContainer}>
+    <ScrollView contentContainerStyle={[styles.homeContainer, { paddingVertical: 40 }]}>
       <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
-      <Text style={{ marginBottom: 30, color: 'lightgray' }}>Ola, {user.displayName}!</Text>
+      <Text style={{ marginBottom: 30, color: 'lightgray', textAlign: 'center' }}>Ola, {user.displayName}!</Text>
       
       <TouchableOpacity 
         style={styles.watercolorButtonContainer} 
@@ -277,6 +277,6 @@ export default function Index() {
         <Text style={styles.secondaryButtonText}>LogOut, dw :I</Text>
       </TouchableOpacity>
 
-    </View>
+    </ScrollView>
   );
 }
