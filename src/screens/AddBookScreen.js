@@ -1,19 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; // 👈 IMPORTAMOS AS ICONAS
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
-import {
-  ImageBackground,
-  ScrollView,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
-// 1. IMPORTAR SafeAreaView
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import watercolorBg1 from '../../assets/images/watercolor.png';
+import { ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { COUNTRY_DATA } from '../constants/countries';
 
 export default function AddBookScreen({
@@ -38,140 +26,123 @@ export default function AddBookScreen({
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0e14' }}>
-      {/* 2. ScrollView envolviendo todo para asegurar que todo sea accesible */}
-      <ScrollView 
-        contentContainerStyle={[styles.container, { paddingBottom: 40 }]}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+    <View style={[styles.container, { justifyContent: 'center' }]}>
+      
+      {/* 👈 FRECHA FLOTANTE SUPERIOR ESQUERDA (Fai exactamente o mesmo que o botón Back) */}
+      <TouchableOpacity 
+        style={styles.backButtonFloating} 
+        onPress={() => setScreen('home')}
       >
-        
-        {/* FLECHA FLOTANTE SUPERIOR */}
-        <TouchableOpacity 
-          style={styles.backButtonFloating} 
-          onPress={() => setScreen('home')}
-        >
-          <Ionicons name="arrow-back" size={22} color="#fff" />
-        </TouchableOpacity>
-        
-        <Text style={styles.title}>Log a Book</Text>
+        <Ionicons name="arrow-back" size={22} color="#fff" />
+      </TouchableOpacity>
+      
+      <Text style={styles.title}>Log a Book</Text>
 
-        <Text style={styles.label}>Book Title</Text>
+      <Text style={styles.label}>Book Title</Text>
+      <TextInput
+        style={styles.input}
+        value={title}
+        onChangeText={setTitle}
+        placeholder="Title"
+        placeholderTextColor="#666"
+      />
+
+      <Text style={styles.label}>Author</Text>
+      <TextInput
+        style={styles.input}
+        value={author}
+        onChangeText={setAuthor}
+        placeholder="Author"
+        placeholderTextColor="#666"
+      />
+
+      {/* Contedor do País */}
+      <View style={{ zIndex: 3000, position: 'relative', marginBottom: 15 }}>
+        <Text style={styles.label}>Country</Text>
         <TextInput
           style={styles.input}
-          value={title}
-          onChangeText={setTitle}
-          placeholder="Title"
-          placeholderTextColor="#666"
+          placeholder="Search country (e.g. Spain...)"
+          placeholderTextColor="#777"
+          value={searchText}
+          onChangeText={(text) => {
+            setSearchText(text);
+            setShowSuggestions(true);
+          }}
+          onFocus={() => setShowSuggestions(true)}
         />
 
-        <Text style={styles.label}>Author</Text>
-        <TextInput
-          style={styles.input}
-          value={author}
-          onChangeText={setAuthor}
-          placeholder="Author"
-          placeholderTextColor="#666"
-        />
+        {/* MENÚ DESPREGABLE */}
+        {showSuggestions && searchText.length > 0 && (
+          <View style={styles.suggestionsContainer}>
+            <ScrollView 
+              style={{ maxHeight: 200 }} 
+              keyboardShouldPersistTaps="handled"
+            >
+              {filteredCountries.map((item) => (
+                <TouchableOpacity 
+                  key={item.value} 
+                  style={styles.suggestionItem}
+                  onPress={() => {
+                    setCountry(item.value);
+                    setSearchText(item.label);
+                    setShowSuggestions(false);
+                  }}
+                >
+                  <Text style={styles.suggestionText}>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+              {filteredCountries.length === 0 && (
+                <View style={styles.suggestionItem}>
+                  <Text style={{ color: '#888', fontStyle: 'italic' }}>No countries found</Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        )}
+      </View>
 
-        {/* Buscador de País */}
-        <View style={{ zIndex: 3000, position: 'relative', marginBottom: 15 }}>
-          <Text style={styles.label}>Country</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Search country (e.g. Spain...)"
-            placeholderTextColor="#777"
-            value={searchText}
-            onChangeText={(text) => {
-              setSearchText(text);
-              setShowSuggestions(true);
-            }}
-            onFocus={() => setShowSuggestions(true)}
-          />
-
-          {/* Menú desplegable */}
-          {showSuggestions && searchText.length > 0 && (
-            <View style={styles.suggestionsContainer}>
-              <ScrollView 
-                style={{ maxHeight: 200 }} 
-                keyboardShouldPersistTaps="handled"
-              >
-                {filteredCountries.map((item) => (
-                  <TouchableOpacity 
-                    key={item.value} 
-                    style={styles.suggestionItem}
-                    onPress={() => {
-                      setCountry(item.value);
-                      setSearchText(item.label);
-                      setShowSuggestions(false);
-                    }}
-                  >
-                    <Text style={styles.suggestionText}>{item.label}</Text>
-                  </TouchableOpacity>
-                ))}
-                {filteredCountries.length === 0 && (
-                  <View style={styles.suggestionItem}>
-                    <Text style={{ color: '#888', fontStyle: 'italic' }}>
-                      No countries found
-                    </Text>
-                  </View>
-                )}
-              </ScrollView>
-            </View>
-          )}
-        </View>
-
-        <Text style={styles.label}>Year</Text>
-        <View style={styles.pickerWrapper}>
-          <Picker
-            selectedValue={year}
-            onValueChange={setYear}
-            style={styles.picker}
-          >
-            {yearsList.map(y => (
-              <Picker.Item key={y} label={y} value={y} />
-            ))}
-          </Picker>
-        </View>
-
-        <Text style={styles.label}>Author Gender</Text>
-        <View style={styles.pickerWrapper}>
-          <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker}>
-            <Picker.Item label="Female (F)" value="F" />
-            <Picker.Item label="Male (M)" value="M" />
-            <Picker.Item label="Non-Binary (NB)" value="NB" />
-          </Picker>
-        </View>
-
-        <Text style={styles.label}>To Read?</Text>
-        <View style={{ marginTop: 10 }}>
-          <Switch value={toRead} onValueChange={setToRead} />
-        </View>
-        
-        {/* 3. BOTÓN DE GUARDAR (Llama a la función addBook) */}
-        <TouchableOpacity 
-          style={[styles.watercolorButtonContainer, { marginTop: 30 }]} 
-          activeOpacity={0.8}
-          onPress={addBook} // 👈 Corregido para ejecutar la función de guardar
+      <Text style={styles.label}>Year</Text>
+      <View style={styles.pickerWrapper}>
+        <Picker
+          selectedValue={year}
+          onValueChange={setYear}
+          style={styles.picker}
         >
-          <ImageBackground 
-            source={watercolorBg1} 
-            style={styles.watercolorButtonImage}
-            resizeMode="cover"
-          >
-            <Text style={styles.watercolorButtonText}>Save Book</Text>
-          </ImageBackground>
-        </TouchableOpacity> 
-        
-        {/* BOTÓN VOLVER */}
-        <TouchableOpacity 
-          style={[styles.secondaryButton, { marginTop: 15 }]} 
-          onPress={() => setScreen('home')}
-        >
-          <Text style={styles.secondaryButtonText}>Back</Text>
-        </TouchableOpacity>
+          {yearsList.map(y => (
+            <Picker.Item key={y} label={y} value={y} />
+          ))}
+        </Picker>
+      </View>
 
-      </ScrollView>
-    </SafeAreaView>
+      <Text style={styles.label}>Author Gender</Text>
+      <View style={styles.pickerWrapper}>
+        <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker} >
+          <Picker.Item label="Female (F)" value="F" />
+          <Picker.Item label="Male (M)" value="M" />
+          <Picker.Item label="Non-Binary (NB)" value="NB" />
+        </Picker>
+      </View>
+
+      <Text style={styles.label}>To Read?</Text>
+      <View style={{ marginTop: 10 }}></View>
+      <Switch value={toRead} onValueChange={setToRead} />
+      
+      <View style={{ marginTop: 20 }}></View>
+
+      {/* BOTÓN DE GARDAR MODERNO */}
+      <TouchableOpacity style={styles.primaryButton} onPress={addBook}>
+        <Text style={styles.primaryButtonText}>Save Book</Text>
+      </TouchableOpacity>
+
+      <View style={{ marginTop: 20 }}></View>
+      
+      {/* BOTÓN DE VOLVER MODERNO ABAIXO */}
+      <TouchableOpacity style={styles.secondaryButton} onPress={() => setScreen('home')}>
+        <Text style={styles.secondaryButtonText}>Back</Text>
+      </TouchableOpacity>
+
+      <View style={{ marginTop: 20 }}></View>
+
+    </View>
   );
 }
