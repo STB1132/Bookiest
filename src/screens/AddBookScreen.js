@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { ScrollView, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { COUNTRY_DATA } from '../constants/countries';
 
+import { ImageBackground } from 'react-native';
+
+import watercolorBg1 from '../../assets/images/watercolor.png';
+
 export default function AddBookScreen({
   title, setTitle,
   author, setAuthor,
@@ -26,6 +30,9 @@ export default function AddBookScreen({
   );
 
   return (
+
+
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0e14' }}>
     <View style={[styles.container, { justifyContent: 'center' }]}>
       
       {/* 👈 FRECHA FLOTANTE SUPERIOR ESQUERDA (Fai exactamente o mesmo que o botón Back) */}
@@ -130,9 +137,20 @@ export default function AddBookScreen({
       <View style={{ marginTop: 20 }}></View>
 
       {/* BOTÓN DE GARDAR MODERNO */}
-      <TouchableOpacity style={styles.primaryButton} onPress={addBook}>
-        <Text style={styles.primaryButtonText}>Save Book</Text>
-      </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.watercolorButtonContainer} 
+        activeOpacity={0.8}
+        onPress={() => setScreen('addBook')}
+      >
+        <ImageBackground 
+          source={watercolorBg1} 
+          style={styles.watercolorButtonImage}
+          resizeMode="cover"
+        >
+          <Text style={styles.watercolorButtonText}>Save Book</Text>
+        </ImageBackground>
+      </TouchableOpacity> 
+      
 
       <View style={{ marginTop: 20 }}></View>
       
@@ -141,8 +159,13 @@ export default function AddBookScreen({
         <Text style={styles.secondaryButtonText}>Back</Text>
       </TouchableOpacity>
 
+
+      
+
       <View style={{ marginTop: 20 }}></View>
 
     </View>
+  </SafeAreaView>
+  
   );
 }
