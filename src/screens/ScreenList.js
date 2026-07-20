@@ -61,8 +61,7 @@ export default function ScreenList({
               toRead: typeof b.toRead === 'boolean' ? b.toRead : false,
             }));
 
-            const updatedBooks = [...books, ...formattedBooks];
-            saveBooks(updatedBooks);
+            await saveBooks(formattedBooks);
             alert(`¡Éxito! Se añadieron ${jsonBooks.length} libros.`);
           } else {
             alert('El archivo JSON debe ser una lista/array [] de libros.');

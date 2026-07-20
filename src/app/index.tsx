@@ -165,9 +165,22 @@ const toggleToRead = async (bookObject) => {
 };
 
 
-  const saveBooks = () => {
-    loadBooks();
-  };
+  const saveBooks = async (booksToImport) => {
+  if (!user) return;
+
+  try {
+    for (const book of booksToImport) {
+      await addDoc(collection(db, "books"), {
+        ...book,
+        userId: user.uid,
+      });
+    }
+
+    await loadBooks();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const yearsList = [];
   for (let i = 0; i <= 2030; i++) { yearsList.push(i.toString()); }
