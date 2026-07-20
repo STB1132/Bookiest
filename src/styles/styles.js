@@ -99,7 +99,33 @@ export const styles = StyleSheet.create({
     color: '#fff', 
     backgroundColor: '#171a23',
   },
-
+  
+  // --- BOTÓN CIRCULAR DE ACUARELA ---
+  watercolorButtonContainer: {
+    width: 120,                  // Ancho y alto iguales para hacer un círculo perfecto
+    height: 120,
+    borderRadius: 60,            // La mitad del ancho/alto para renderizar un círculo en React Native
+    overflow: 'hidden',          // Recorta la imagen cuadrada para que encaje dentro del círculo
+    alignSelf: 'center',
+    marginVertical: 15,
+  },
+  watercolorButtonImage: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',    // Centra el texto o icono verticalmente
+    alignItems: 'center',        // Centra el texto o icono horizontalmente
+  },
+  watercolorButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontFamily: 'SofiaSansCondensed-SemiBold',
+    textAlign: 'center',
+    // Sombra de texto opcional para mejorar legibilidad sobre la acuarela
+    textShadowColor: 'rgba(0, 0, 0, 0.6)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+  },
   // --- COMPONENTES DA PANTALLA SCREENLIST (SEN ESTILOS INLINE) ---
   listMainContainer: { 
     flex: 1, 

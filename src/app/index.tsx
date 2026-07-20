@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dimensions, Text, TouchableOpacity, View } from 'react-native';
+// 1. Añadido ImageBackground al import
+import { Button, Dimensions, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import watercolorBg from '../assets/images/watercolor.png';
 import AddBookScreen from '../screens/AddBookScreen';
 import Clippings from '../screens/Clippings';
 import ScreenList from '../screens/ScreenList';
@@ -18,7 +20,7 @@ const chartConfig = {
   backgroundGradientTo: "#171a23",
   color: (opacity = 1) => `rgba(0, 47, 167, ${opacity})`, // 👈 Círculo de progreso en Azul Klein puro (#002fa7)
   labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // 👈 Textos e porcentaxes en branco puro
-   propsForLabels: {
+  propsForLabels: {
     fontFamily: "sans-serif", // Cambia o Times New Roman por unha fonte limpa e moderna
   }
 };
@@ -209,6 +211,7 @@ export default function Index() {
       />
     );
   }
+
   // PANTALLA CLIPPINGS (KINDLE HIGHLIGHTS)
   if (screen === 'clippings') {
     return (
@@ -227,11 +230,20 @@ export default function Index() {
       <Text style={[styles.title, { marginBottom: 10 }]}>Bookiest</Text>
       <Text style={{ marginBottom: 30, color: 'lightgray' }}>Ola, {user.displayName}!</Text>
       
-      <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('add')}>
-        <Text style={styles.primaryButtonText}> Log single book </Text>
-      </TouchableOpacity>
-      <View style={{ height: 15 }} />
-     
+      <TouchableOpacity 
+        style={styles.watercolorButtonContainer} 
+        activeOpacity={0.8}
+        onPress={() => setScreen('add')}
+      >
+        <ImageBackground 
+          source={watercolorBg} 
+          style={styles.watercolorButtonImage}
+          resizeMode="cover"
+        >
+          <Text style={styles.watercolorButtonText}>Log Single Book</Text>
+        </ImageBackground>
+      </TouchableOpacity> 
+          
       <TouchableOpacity style={styles.primaryButton} onPress={() => setScreen('list')}>
         <Text style={styles.primaryButtonText}> See my books </Text>
       </TouchableOpacity>
