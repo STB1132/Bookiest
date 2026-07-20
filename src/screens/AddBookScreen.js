@@ -36,6 +36,9 @@ export default function AddBookScreen({
     item.value.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  // Define the font family name you loaded (adjust if your loaded font name is slightly different, e.g., 'Sofia-Regular')
+  const customFont = { fontFamily: 'Sofia' };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0b0e14' }}>
       <ScrollView 
@@ -51,9 +54,12 @@ export default function AddBookScreen({
           <Ionicons name="arrow-back" size={22} color="#fff" />
         </TouchableOpacity>
         
-        <Text style={[styles.title, { marginTop: 20 }]}>Log a Book</Text>
+        {/* 1. Added more space above (marginTop: 50) and forced the Sofia typography */}
+        <Text style={[styles.title, customFont, { marginTop: 50, marginBottom: 20 }]}>
+          Log a Book
+        </Text>
 
-        <Text style={styles.label}>Book Title</Text>
+        <Text style={[styles.label, customFont]}>Book Title</Text>
         <TextInput
           style={styles.input}
           value={title}
@@ -62,7 +68,7 @@ export default function AddBookScreen({
           placeholderTextColor="#666"
         />
 
-        <Text style={styles.label}>Author</Text>
+        <Text style={[styles.label, customFont]}>Author</Text>
         <TextInput
           style={styles.input}
           value={author}
@@ -73,7 +79,7 @@ export default function AddBookScreen({
 
         {/* Buscador de País */}
         <View style={{ zIndex: 3000, position: 'relative', marginBottom: 15 }}>
-          <Text style={styles.label}>Country</Text>
+          <Text style={[styles.label, customFont]}>Country</Text>
           <TextInput
             style={styles.input}
             placeholder="Search country (e.g. Spain...)"
@@ -118,7 +124,7 @@ export default function AddBookScreen({
           )}
         </View>
 
-        <Text style={styles.label}>Year</Text>
+        <Text style={[styles.label, customFont]}>Year</Text>
         <View style={styles.pickerWrapper}>
           <Picker
             selectedValue={year}
@@ -131,7 +137,7 @@ export default function AddBookScreen({
           </Picker>
         </View>
 
-        <Text style={styles.label}>Author Gender</Text>
+        <Text style={[styles.label, customFont]}>Author Gender</Text>
         <View style={styles.pickerWrapper}>
           <Picker selectedValue={gender} onValueChange={setGender} style={styles.picker}>
             <Picker.Item label="Female (F)" value="F" />
@@ -140,12 +146,12 @@ export default function AddBookScreen({
           </Picker>
         </View>
 
-        <Text style={styles.label}>To Read?</Text>
+        <Text style={[styles.label, customFont]}>To Read?</Text>
         <View style={{ marginTop: 10 }}>
           <Switch value={toRead} onValueChange={setToRead} />
         </View>
         
-        {/* BOTÓN GUARDAR (Con textura de acuarela) */}
+        {/* BOTÓN GUARDAR */}
         <TouchableOpacity 
           style={[styles.watercolorButtonContainer, { marginTop: 30 }]} 
           activeOpacity={0.8}
@@ -156,7 +162,7 @@ export default function AddBookScreen({
             style={styles.watercolorButtonImage}
             resizeMode="cover"
           >
-            <Text style={styles.watercolorButtonText}>Save Book</Text>
+            <Text style={[styles.watercolorButtonText, customFont]}>Save Book</Text>
           </ImageBackground>
         </TouchableOpacity> 
 
@@ -165,7 +171,7 @@ export default function AddBookScreen({
           style={[styles.secondaryButton, { marginTop: 15 }]} 
           onPress={() => setScreen('home')}
         >
-          <Text style={styles.secondaryButtonText}>Back</Text>
+          <Text style={[styles.secondaryButtonText, customFont]}>Back</Text>
         </TouchableOpacity>
 
       </ScrollView>
