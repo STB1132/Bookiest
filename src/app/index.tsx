@@ -124,37 +124,46 @@ export default function Index() {
   };
 
 
-  const deleteBook = async (index) => {
-    const bookToDelete = books[index];
-    if (!bookToDelete.id) return;
+ // Substitúe estas dúas funcións no teu index.js:
 
-    try {
-      await deleteDoc(doc(db, "books", bookToDelete.id));
-      setBooks(books.filter((_, i) => i !== index));
-    } catch (error) {
-      console.error("Erro ao borrar o libro:", error);
-    }
-  };
+const deleteBook = async (bookObject) => {
+  if (!bookObject || !bookObject.id) return;
 
-  const toggleToRead = async (index) => {
-    const bookToUpdate = books[index];
-    if (!bookToUpdate.id) return;
+  try {
+    // Borramos en Firebase usando o ID único directamente
+    await deleteDoc(doc(db, "books", bookObject.id));
+    
+    // Filtramos o estado local eliminando o libro que coincida con ese ID
+    setBooks(books.filter((b) => b.id !== bookObject.id));
+  } catch (error) {
+    console.error("Erro ao borrar o libro:", error);
+  }
+};
 
-    const nuevoEstado = !bookToUpdate.toRead;
+const toggleToRead = async (bookObject) => {
+  if (!bookObject || !bookObject.id) return;
 
-    try {
-      const bookRef = doc(db, "books", bookToUpdate.id);
-      await updateDoc(bookRef, { toRead: nuevoEstado });
+  const nuevoEstado = !bookObject.toRead;
 
-      const updatedBooks = [...books];
-      updatedBooks[index].toRead = nuevoEstado;
-      setBooks(updatedBooks);
-      
-      console.log("Estado cambiado en Firebase!");
-    } catch (error) {
-      console.error("Erro ao cambiar o estado do libro:", error);
-    }
-  };
+  try {
+    const bookRef = doc(db, "books", bookObject.id);
+    await updateDoc(bookRef, { toRead: nuevoEstado });
+
+    // Actualizamos o estado en local de forma limpa buscando polo ID
+    const updatedBooks = books.map((b) => {
+      if (b.id === bookObject.id) {
+        return { ...b, toRead: nuevoEstado };
+      }
+      return b;
+    });
+    
+    setBooks(updatedBooks);
+    console.log("Estado cambiado en Firebase!");
+  } catch (error) {
+    console.error("Erro ao cambiar o estado do libro:", error);
+  }
+};
+
 
   const saveBooks = () => {
     loadBooks();

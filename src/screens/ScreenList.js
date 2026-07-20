@@ -28,12 +28,12 @@ export default function ScreenList({
     const query = searchQuery.toLowerCase();
     if (!query) return true;
 
-    return (
-      (book.title?.toLowerCase().includes(query) || false) ||
-      (book.author?.toLowerCase().includes(query) || false) ||
-      (book.country?.toLowerCase().includes(query) || false) ||
-      (book.year?.toString().includes(query) || false) || 
-      (book.readInYear?.toString().includes(query) || false)
+  return (
+      (book.title?.toLowerCase() || '').includes(query) ||
+      (book.author?.toLowerCase() || '').includes(query) ||
+      (book.country?.toLowerCase() || '').includes(query) ||
+      (book.year?.toString() || '').includes(query) || 
+      (book.readInYear?.toString() || '').includes(query)
     );
   });
 
@@ -105,20 +105,17 @@ export default function ScreenList({
     }
   };
 
-
+  // Busca estas funcións dentro de ScreenList.js e substitúeas por estas:
   const toggleBookStatus = (item) => {
-    const realIndex = books.findIndex(b => b.id === item.id);
-    if (realIndex !== -1) {
-      toggleToRead(realIndex);
-    }
+    // En lugar de buscar o realIndex en local, pasámoslle o obxecto directo
+    toggleToRead(item); 
   };
 
   const handleIndividualDelete = (item) => {
-    const realIndex = books.findIndex(b => b.id === item.id);
-    if (realIndex !== -1) {
-      deleteBook(realIndex);
-    }
+    // Pasámoslle o obxecto directo para identificalo polo seu ID único de Firebase
+    deleteBook(item); 
   };
+
 
   return (
     <View style={styles.listMainContainer}>
